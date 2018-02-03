@@ -1,0 +1,51 @@
+; Vicious Worrying
+
+(defdomain worry
+  (
+    ; The !eat operator increments the bio-level of the agent's hunger
+    ; attribute by a random ranged amount. This also has the chance of
+    ; lowering the agent's worry level.
+    (:operator (!eat)
+      ;preconditions
+      (())
+      ;deleted
+      (())
+      ;added
+      (())
+    )
+
+    ; The !use-bathroom operator increments the bio-level of the agent's bladder
+    ; attribute by a random ranged amount. This also has the chance of
+    ; slightly lowering the agent's worry level.
+    (:operator (!use-bathroom)
+      ;preconditions
+      (())
+      ;deleted
+      (())
+      ;added
+      (())
+    )
+
+    ; The !sleep operator increments the bio-level of the agent's energy
+    ; attribute by a random ranged amount. This also has the chance of
+    ; greatly lowering/zeroing the agent's worry level.
+    (:operator (!sleep)
+      ;preconditions
+      (())
+      ;deleted
+      (())
+      ;added
+      (())
+    )
+
+
+
+
+
+
+
+
+
+
+  )
+)

@@ -16,10 +16,10 @@
   ; item of worry to serve as a spark.
 
   (
-    (bio-level-hunger me 50)
-    (bio-level-bladder me 50)
-    (bio-level-energy me 50)
-    (worry-level me 50)
+    (bio-level hunger me 50)
+    (bio-level bladder me 50)
+    (bio-level energy me 50)
+    (bio-level worry me 50)
     (memory car-ticket)
   )
 
