@@ -7,11 +7,13 @@
     ; lowering the agent's worry level.
     (:operator (!eat)
       ;preconditions
-      (())
+      (
+        (bio-level hunger me 0)
+      )
       ;deleted
-      (())
+      ()
       ;added
-      (())
+      ()
     )
 
     ; The !use-bathroom operator increments the bio-level of the agent's bladder
@@ -19,11 +21,13 @@
     ; slightly lowering the agent's worry level.
     (:operator (!use-bathroom)
       ;preconditions
-      (())
+      (
+        (bio-level bladder me 0)
+      )
       ;deleted
-      (())
+      ()
       ;added
-      (())
+      ()
     )
 
     ; The !sleep operator increments the bio-level of the agent's energy
@@ -31,19 +35,58 @@
     ; greatly lowering/zeroing the agent's worry level.
     (:operator (!sleep)
       ;preconditions
-      (())
+      (
+        (bio-level energy me 0)
+      )
       ;deleted
-      (())
+      ()
       ;added
-      (())
+      ()
     )
 
+    ; The !end-worry operator pulls the agent out of its misery and
+    ; ends the program.
+    (:operator (!end-worry)
+      ;preconditions
+      (
+        (bio-level worry me 0)
+      )
+      ;deleted
+      ()
+      ;added
+      ()
+    )
 
+    ; The !worry operator continues the vicious cycle of worrying. This lowers
+    ; the other bio-levels of the agent.
+    (:operator (!worry)
+      ;preconditions
+      ()
+      ;deleted
+      ()
+      ;added
+      ()
+    )
 
+    ; The goal method that is called from problem. The agent will be successful
+    ; when it stops its vicious worrying.
+    (:method (stop-worrying me)
+      ;preconditions for branch-1
+      (
+        (bio-level worry me 0)
+      )
+      ;steps for branch-1
+      (
+        (!end-worry)
+      )
 
-
-
-
+      ;preconditions for branch-2
+      ()
+      ;steps for branch-2
+      (
+        (!worry)
+      )
+    )
 
 
 
