@@ -1,0 +1,35 @@
+(defproblem problem worry
+
+  ; The initial facts of the mental state of the agent. The
+  ; agent starts with some basic knowledge and a mental state
+  ; to service as a catalyst for its vicious worrying. The agent's
+  ; starting biological necessity levels are also set here, which
+  ; will be constantly updated as the agent simulates vicious worrying.
+
+  ; Biological necessity level values range from 0 to 100 (completely
+  ; unfulfilled to fully fulfilled respectively).
+
+
+
+  ; This problem definition defines an agent who starts in a medium/average
+  ; mental state. Biological necessities are all midway and there is a single
+  ; item of worry to serve as a spark.
+
+  (
+    (bio-level-hunger me 50)
+    (bio-level-bladder me 50)
+    (bio-level-energy me 50)
+    (worry-level me 50)
+    (memory car-ticket)
+  )
+
+
+
+  ; The starting method. The agent's goal is it stop worrying (reduce the worry-level
+  ; value to 0), so we will call the stop-worrying method as the starting point.
+
+  (
+    (stop-worrying me)
+  )
+
+)
