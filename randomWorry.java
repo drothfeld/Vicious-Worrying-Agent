@@ -6,7 +6,7 @@ public class randomWorry implements Calculate {
     // Generate random value
     Random ran = new Random();
     int ranValue = ran.nextInt(8) + 3;
-    System.out.println("Random WORRY value generated: " + ranValue);
+    System.out.println("WORRY value generated: " + ranValue);
 
     // Return random value
   	return new TermNumber(ranValue);

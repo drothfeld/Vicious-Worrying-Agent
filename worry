@@ -39,7 +39,7 @@
         (bio-level worry me ?w)
         (bio-level hunger me ?h)
         (assign ?rndWorry (call randomWorry (?w)))
-        (assign ?rndHunger (call randomEat (?h)))
+        (assign ?rndHunger (call randomWorry (?h)))
       )
       ;deleted
       (
@@ -120,6 +120,25 @@
       )
     )
 
+    ; In this operator the agent is worrying about the notion that it is worrying,
+    ; hence the vicious cycle.
+    (:operator (!worry-about-worrying)
+      ;preconditions
+      (
+        (bio-level worry me ?w)
+        (assign ?rndWorry (call randomWorry (?w)))
+      )
+      ;deleted
+      (
+        (bio-level worry me ?w)
+      )
+      ;added
+      (
+        (bio-level worry me (call + ?w ?rndWorry))
+        (worried-because-worrying me)
+      )
+    )
+
     ; The goal method that is called from problem. The agent will be successful
     ; when it stops its vicious worrying.
     (:method (stop-worrying)
@@ -150,6 +169,7 @@
       ;steps for branch-1
       (
         (check-bio-levels)
+        (meta-worrying)
         (stop-worrying)
       )
     )
@@ -196,8 +216,6 @@
       (
         (!worry)
       )
-
-
     )
 
 

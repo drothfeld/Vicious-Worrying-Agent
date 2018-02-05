@@ -6,7 +6,7 @@ public class randomEat implements Calculate {
     // Generate random value
     Random ran = new Random();
     int ranValue = ran.nextInt(26) + 10;
-    System.out.println("Random EAT incremental value generated: " + ranValue);
+    System.out.println("EAT value generated: " + ranValue);
 
     // Return random value
   	return new TermNumber(ranValue);
