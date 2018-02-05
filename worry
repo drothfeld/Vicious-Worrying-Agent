@@ -65,7 +65,7 @@
       ;added
       (
         (bio-level energy me 100)
-        (bio-level worry me 100)
+        (bio-level worry me 0)
       )
     )
 
@@ -117,7 +117,8 @@
     (:method (stop-worrying me)
       ;preconditions for branch-1
       (
-        (bio-level worry me 0)
+        (bio-level worry me ?w)
+        (call < ?w 1)
       )
       ;steps for branch-1
       (
@@ -140,9 +141,8 @@
       ()
       ;steps for branch-1
       (
-        (!worry)
         (check-bio-levels)
-        (begin-worrying)
+        (stop-worrying me)
       )
     )
 
@@ -154,28 +154,28 @@
     (:method (check-bio-levels)
       ;preconditions for branch-1
       (
-        (bio-level bladder me ?b)
+        (bio-level bladder me 0)
         ;(call <= ?b 15)
       )
       ;steps for branch-1
       (
-        (!use-bathroom)
+        ;(!use-bathroom)
       )
 
       ;preconditions for branch-2
       (
-        (bio-level hunger me ?h)
+        (bio-level hunger me 0)
         ;(call <= ?h 25)
       )
       ;steps for branch-2
       (
-        (!eat)
+        ;(!eat)
       )
 
       ;preconditions for branch-3
       (
         (bio-level energy me ?e)
-        ;(call <= ?e 5)
+        (call <= ?e 5)
       )
       ;steps for branch-3
       (
