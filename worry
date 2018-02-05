@@ -31,17 +31,21 @@
       (
         (bio-level bladder me 15)
         (bio-level worry me ?w)
+        (bio-level hunger me ?h)
         (assign ?rnd (call randomWorry (?w)))
+        (assign ?rndH (call randomEat (?h)))
       )
       ;deleted
       (
         (bio-level bladder me ?b)
         (bio-level worry me ?w)
+        (bio-level hunger me ?h)
       )
       ;added
       (
         (bio-level bladder me 100)
         (bio-level worry me (call - ?w ?rnd))
+        (bio-level hunger me (call - ?h ?rndH))
       )
     )
 
@@ -126,7 +130,46 @@
       ;steps for branch-2
       (
         (!worry)
+        (check-bio-levels)
+
       )
+    )
+
+
+    ; This method checks the agent's bio levels, and addresses its needs in a
+    ; logical fashion. The agent will always use the bathroom first if its
+    ; bladder is full. If its bladder is alright but the agent is hungry, it
+    ; will then eat. If the agent is completely out of energy, is well fed, and
+    ; doesn't need to go to the bathroom, then it will go to bed.
+    (:method (check-bio-levels)
+      ;preconditions for branch-1
+      (
+        (bio-level bladder me 15) ;LESS THAN 15
+      )
+      ;steps for branch-1
+      (
+        (!use-bathroom)
+      )
+
+      ;preconditions for branch-2
+      (
+        (bio-level bladder me 100) ; LESS THAN 100
+      )
+      ;steps for branch-2
+      (
+        (!eat)
+      )
+
+      ;preconditions for branch-3
+      (
+        (bio-level energy me 5) ; LESS THAN 5
+      )
+      ;steps for branch-3
+      (
+        (!sleep)
+      )
+
+
     )
 
 
