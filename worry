@@ -101,7 +101,7 @@
         (bio-level bladder me ?b)
         (assign ?rndWorry (call randomWorry (?w)))
         (assign ?rndHunger (call randomWorry (?h)))
-        (assign ?rndEnergy (call randomWorry (?e)))
+        (assign ?rndEnergy (call randomEnergy (?e)))
         (assign ?rndBladder (call randomWorry (?b)))
       )
       ;deleted
@@ -135,7 +135,6 @@
       ;added
       (
         (bio-level worry me (call + ?w ?rndWorry))
-        (worried-because-worrying me)
       )
     )
 
@@ -169,7 +168,7 @@
       ;steps for branch-1
       (
         (check-bio-levels)
-        (meta-worrying)
+        ;(meta-worrying)
         (stop-worrying)
       )
     )
