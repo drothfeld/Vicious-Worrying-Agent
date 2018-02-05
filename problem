@@ -29,7 +29,7 @@
   ; value to 0), so we will call the stop-worrying method as the starting point.
 
   (
-    (stop-worrying me)
+    (stop-worrying)
   )
 
 )

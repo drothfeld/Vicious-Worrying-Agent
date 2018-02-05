@@ -9,17 +9,23 @@
       ;preconditions
       (
         (bio-level hunger me ?h)
-        (assign ?rnd (call randomEat (?h)))
-        (assign ?rndW (call randomEat (?w)))
+        (bio-level bladder me ?b)
+        (bio-level worry me ?w)
+        (assign ?rndHunger (call randomEat (?h)))
+        (assign ?rndBladder (call randomEat (?b)))
+        (assign ?rndWorry (call randomEat (?w)))
       )
       ;deleted
       (
         (bio-level hunger me ?h)
+        (bio-level bladder me ?b)
+        (bio-level worry me ?w)
       )
       ;added
       (
-        (bio-level hunger me (call + ?h ?rnd))
-        (bio-level worry me (call - ?w ?rndW))
+        (bio-level hunger me (call + ?h ?rndHunger))
+        (bio-level bladder me (call - ?b ?rndBladder))
+        (bio-level worry me (call - ?w ?rndWorry))
       )
     )
 
@@ -29,10 +35,11 @@
     (:operator (!use-bathroom)
       ;preconditions
       (
+        (bio-level bladder me ?b)
         (bio-level worry me ?w)
         (bio-level hunger me ?h)
-        (assign ?rnd (call randomWorry (?w)))
-        (assign ?rndH (call randomEat (?h)))
+        (assign ?rndWorry (call randomWorry (?w)))
+        (assign ?rndHunger (call randomEat (?h)))
       )
       ;deleted
       (
@@ -43,8 +50,8 @@
       ;added
       (
         (bio-level bladder me 100)
-        (bio-level worry me (call - ?w ?rnd))
-        (bio-level hunger me (call - ?h ?rndH))
+        (bio-level worry me (call - ?w ?rndWorry))
+        (bio-level hunger me (call - ?h ?rndHunger))
       )
     )
 
@@ -74,7 +81,8 @@
     (:operator (!end-worry)
       ;preconditions
       (
-        (bio-level worry me 0)
+        (bio-level worry me ?w)
+        (call < ?w 1)
       )
       ;deleted
       ()
@@ -107,14 +115,14 @@
       (
         (bio-level worry me (call + ?w ?rndWorry))
         (bio-level hunger me (call - ?h ?rndHunger))
-        (bio-level energy me (call - ?h ?rndEnergy))
-        (bio-level bladder me (call - ?h ?rndBladder))
+        (bio-level energy me (call - ?e ?rndEnergy))
+        (bio-level bladder me (call - ?b ?rndBladder))
       )
     )
 
     ; The goal method that is called from problem. The agent will be successful
     ; when it stops its vicious worrying.
-    (:method (stop-worrying me)
+    (:method (stop-worrying)
       ;preconditions for branch-1
       (
         (bio-level worry me ?w)
@@ -142,7 +150,7 @@
       ;steps for branch-1
       (
         (check-bio-levels)
-        (stop-worrying me)
+        (stop-worrying)
       )
     )
 
@@ -154,22 +162,22 @@
     (:method (check-bio-levels)
       ;preconditions for branch-1
       (
-        (bio-level bladder me 0)
-        ;(call <= ?b 15)
+        (bio-level bladder me ?b)
+        (call <= ?b 15)
       )
       ;steps for branch-1
       (
-        ;(!use-bathroom)
+        (!use-bathroom)
       )
 
       ;preconditions for branch-2
       (
-        (bio-level hunger me 0)
-        ;(call <= ?h 25)
+        (bio-level hunger me ?h)
+        (call <= ?h 25)
       )
       ;steps for branch-2
       (
-        ;(!eat)
+        (!eat)
       )
 
       ;preconditions for branch-3
