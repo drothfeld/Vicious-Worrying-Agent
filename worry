@@ -29,7 +29,6 @@
     (:operator (!use-bathroom)
       ;preconditions
       (
-        (bio-level bladder me 15)
         (bio-level worry me ?w)
         (bio-level hunger me ?h)
         (assign ?rnd (call randomWorry (?w)))
@@ -55,7 +54,7 @@
     (:operator (!sleep)
       ;preconditions
       (
-        (bio-level energy me 5)
+        (bio-level energy me ?e)
         (bio-level worry me ?w)
       )
       ;deleted
@@ -129,12 +128,23 @@
       ()
       ;steps for branch-2
       (
-        (!worry)
-        (check-bio-levels)
-
+        (begin-worrying)
       )
     )
 
+    ; Called from the starting method. This method contains
+    ; the core logic of the worry cycle.
+
+    (:method (begin-worrying)
+      ;preconditions for branch-1
+      ()
+      ;steps for branch-1
+      (
+        (!worry)
+        (check-bio-levels)
+        (begin-worrying)
+      )
+    )
 
     ; This method checks the agent's bio levels, and addresses its needs in a
     ; logical fashion. The agent will always use the bathroom first if its
@@ -144,7 +154,8 @@
     (:method (check-bio-levels)
       ;preconditions for branch-1
       (
-        (bio-level bladder me 15) ;LESS THAN 15
+        (bio-level bladder me ?b)
+        ;(call <= ?b 15)
       )
       ;steps for branch-1
       (
@@ -153,7 +164,8 @@
 
       ;preconditions for branch-2
       (
-        (bio-level bladder me 100) ; LESS THAN 100
+        (bio-level hunger me ?h)
+        ;(call <= ?h 25)
       )
       ;steps for branch-2
       (
@@ -162,11 +174,19 @@
 
       ;preconditions for branch-3
       (
-        (bio-level energy me 5) ; LESS THAN 5
+        (bio-level energy me ?e)
+        ;(call <= ?e 5)
       )
       ;steps for branch-3
       (
         (!sleep)
+      )
+
+      ;preconditions for branch-4
+      ()
+      ;steps for branch-4
+      (
+        (!worry)
       )
 
 
