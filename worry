@@ -8,12 +8,17 @@
     (:operator (!eat)
       ;preconditions
       (
-        (bio-level hunger me 0)
+        (bio-level hunger me ?h)
+        (assign ?rnd (call randomEat (?h)))
       )
       ;deleted
-      ()
+      (
+        (bio-level hunger me ?h)
+      )
       ;added
-      ()
+      (
+        (bio-level hunger me (call + ?h ?rnd))
+      )
     )
 
     ; The !use-bathroom operator increments the bio-level of the agent's bladder
@@ -85,6 +90,7 @@
       ;steps for branch-2
       (
         (!worry)
+        (!eat)
       )
     )
 
