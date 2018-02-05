@@ -10,6 +10,7 @@
       (
         (bio-level hunger me ?h)
         (assign ?rnd (call randomEat (?h)))
+        (assign ?rndW (call randomEat (?w)))
       )
       ;deleted
       (
@@ -18,6 +19,7 @@
       ;added
       (
         (bio-level hunger me (call + ?h ?rnd))
+        (bio-level worry me (call - ?w ?rndW))
       )
     )
 
@@ -27,12 +29,20 @@
     (:operator (!use-bathroom)
       ;preconditions
       (
-        (bio-level bladder me 0)
+        (bio-level bladder me 15)
+        (bio-level worry me ?w)
+        (assign ?rnd (call randomWorry (?w)))
       )
       ;deleted
-      ()
+      (
+        (bio-level bladder me ?b)
+        (bio-level worry me ?w)
+      )
       ;added
-      ()
+      (
+        (bio-level bladder me 100)
+        (bio-level worry me (call - ?w ?rnd))
+      )
     )
 
     ; The !sleep operator increments the bio-level of the agent's energy
@@ -41,12 +51,19 @@
     (:operator (!sleep)
       ;preconditions
       (
-        (bio-level energy me 0)
+        (bio-level energy me 5)
+        (bio-level worry me ?w)
       )
       ;deleted
-      ()
+      (
+        (bio-level energy me ?e)
+        (bio-level worry me ?w)
+      )
       ;added
-      ()
+      (
+        (bio-level energy me 100)
+        (bio-level worry me 100)
+      )
     )
 
     ; The !end-worry operator pulls the agent out of its misery and
@@ -66,11 +83,30 @@
     ; the other bio-levels of the agent.
     (:operator (!worry)
       ;preconditions
-      ()
+      (
+        (bio-level worry me ?w)
+        (bio-level hunger me ?h)
+        (bio-level energy me ?e)
+        (bio-level bladder me ?b)
+        (assign ?rndWorry (call randomWorry (?w)))
+        (assign ?rndHunger (call randomWorry (?h)))
+        (assign ?rndEnergy (call randomWorry (?e)))
+        (assign ?rndBladder (call randomWorry (?b)))
+      )
       ;deleted
-      ()
+      (
+        (bio-level worry me ?w)
+        (bio-level hunger me ?h)
+        (bio-level energy me ?e)
+        (bio-level bladder me ?b)
+      )
       ;added
-      ()
+      (
+        (bio-level worry me (call + ?w ?rndWorry))
+        (bio-level hunger me (call - ?h ?rndHunger))
+        (bio-level energy me (call - ?h ?rndEnergy))
+        (bio-level bladder me (call - ?h ?rndBladder))
+      )
     )
 
     ; The goal method that is called from problem. The agent will be successful
@@ -90,7 +126,6 @@
       ;steps for branch-2
       (
         (!worry)
-        (!eat)
       )
     )
 
