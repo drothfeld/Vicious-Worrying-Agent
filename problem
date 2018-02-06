@@ -25,7 +25,7 @@
     (bio-level worry me 50)
 
     ; MEMORY TO START WORRY
-    (worry-memory me car-ticket)
+    (worry-memory me worry(car ticket))
   )
 
 

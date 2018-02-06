@@ -92,7 +92,7 @@
 
     ; The !worry operator continues the vicious cycle of worrying. This lowers
     ; the other bio-levels of the agent.
-    (:operator (!worry-about ?memory)
+    (:operator (!worry-about ?objA ?objB)
       ;preconditions
       (
         (bio-level worry me ?w)
@@ -122,7 +122,7 @@
 
     ; In this operator the agent is worrying about the notion that it is worrying,
     ; hence the vicious cycle.
-    (:operator (!worry-about-worrying-about ?memory)
+    (:operator (!worry-about-worrying-about)
       ;preconditions
       (
         (bio-level worry me ?w)
@@ -238,16 +238,18 @@
 
       ;preconditions for branch-4
       (
-        (worry-memory me ?memory)
+        (worry-memory me worry(?obj1 ?obj2))
       )
       ;steps for branch-4
       (
-        (!worry-about ?memory)
+        (analyze-worry-memory worry(?obj1 ?obj2))
       )
 
       ;preconditions for branch-5
+      ; NOTHING
       ()
       ;steps for branch-5
+      ; NOTHING
       ()
     )
 
@@ -268,18 +270,52 @@
       (
         (bio-level worry me ?w)
         (call >= ?w 75)
-        (worry-memory me ?memory)
+        ;(worry-memory me ?memory)
       )
       ;steps for branch-2
       (
-        (!worry-about-worrying-about ?memory)
+        ;(!worry-about-worrying-about)
+        ;(analyze-worry-memory ?memory)
       )
 
       ;preconditions for branch-3
+      ; NOTHING
       ()
       ;steps for branch-3
+      ; NOTHING
       ()
     )
+
+    ; This method extrapolates the catalyst memory given by the user and
+    ; determines possible additional worries this memory can trigger.
+    (:method (analyze-worry-memory worry(?objA ?objB))
+      ;preconditions for branch-1
+      (
+        (or
+          (unify ?objA car)
+          (unify ?objA train)
+          (unify ?objA boat)
+        )
+      )
+      ;steps for branch-1
+      (
+        (!worry-about ?objA ?objB)
+      )
+
+
+
+
+
+      ;preconditions for branch-X
+      ; NOTHING
+      ()
+      ;steps for branch-X
+      ; NOTHING
+      ()
+    )
+
+  ; Tests if two values are the same for memory assignment.
+  (:- (unify ?x ?x) nil)
 
   )
 )
