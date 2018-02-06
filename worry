@@ -250,24 +250,28 @@
       ;preconditions for branch-1
       (
         (bio-level worry me ?w)
-        (call >= ?w 85)
+        (call > ?w 100)
       )
       ;steps for branch-1
       (
-        (!worry-about worrying)
+        (!end-it-all)
       )
 
       ;preconditions for branch-2
       (
         (bio-level worry me ?w)
-        (call > ?w 150)
+        (call >= ?w 75)
       )
       ;steps for branch-2
       (
-        (!end-it-all)
+        (!worry-about-worrying)
       )
-    )
 
+      ;preconditions for branch-3
+      ()
+      ;steps for branch-3
+      ()
+    )
 
   )
 )
