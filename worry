@@ -138,6 +138,33 @@
       )
     )
 
+    ; If the agent's worry state reaches a critical high level, the
+    ; agent will decide it can no longer live in such a worrisome state
+    ; and end it all. RIP
+    (:operator (!end-it-all)
+      ;preconditions
+      (
+        (bio-level worry me ?w)
+        (bio-level hunger me ?h)
+        (bio-level bladder me ?b)
+        (bio-level energy me ?e)
+      )
+      ;deleted
+      (
+        (bio-level worry me ?w)
+        (bio-level hunger me ?h)
+        (bio-level bladder me ?b)
+        (bio-level energy me ?e)
+      )
+      ;added
+      (
+        (bio-level worry me 0)
+        (bio-level hunger me 0)
+        (bio-level bladder me 0)
+        (bio-level energy me 0)
+      )
+    )
+
     ; The goal method that is called from problem. The agent will be successful
     ; when it stops its vicious worrying.
     (:method (stop-worrying)
@@ -220,10 +247,25 @@
     ; This method checks how much the agent is currently worried and provides
     ; the potential for getting meta. The agent can worry about worrying,
     (:method (meta-worrying)
-    ;preconditions for branch-1
-    ()
-    ;steps for branch-1
-    ()
+      ;preconditions for branch-1
+      (
+        (bio-level worry me ?w)
+        (call >= ?w 85)
+      )
+      ;steps for branch-1
+      (
+        (!worry-about worrying)
+      )
+
+      ;preconditions for branch-2
+      (
+        (bio-level worry me ?w)
+        (call > ?w 150)
+      )
+      ;steps for branch-2
+      (
+        (!end-it-all)
+      )
     )
 
 
