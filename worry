@@ -90,6 +90,24 @@
       ()
     )
 
+    ; This operator changes the memory the agent is worrying about based
+    ; on how it was analyzed in analyze-worry-memory-subject and
+    ; analyze-worry-memory-event-SUBJECT.
+    (:operator (!think-about ?newSubject ?newEvent)
+      ;preconditions
+      (
+        (worry-memory me worry(?subject ?event))
+      )
+      ;deleted
+      (
+        (worry-memory me worry(?subject ?event))
+      )
+      ;added
+      (
+        (worry-memory me worry(?newSubject ?newEvent))
+      )
+    )
+
     ; The !worry operator continues the vicious cycle of worrying. This lowers
     ; the other bio-levels of the agent.
     (:operator (!worry-about ?subject ?event)
@@ -312,7 +330,7 @@
       ()
       ;steps for branch-X
       ; NOTHING
-      ()
+      ((!worry-about ?subject ?event))
     )
 
     ; After determining which subject category the memory is from [VEHICLE],
@@ -323,28 +341,26 @@
       ; Destruction Negative Event (Extreme) -> Health
       ((or(unify ?event crash)(unify ?event accident)(unify ?event destroyed)(unify ?event explosion)(unify ?event fire)))
       ;steps for branch-1
-      ((!worry-about ?subject ?event))
+      ((!worry-about ?subject ?event)(!think-about everyone safe))
 
       ;preconditions for branch-2
       ; Personal Negative Event (Major) -> Money
       ((or(unify ?event ticket)(unify ?event stolen)(unify ?event smashed)(unify ?event dented)(unify ?event hit)(unify ?event broken)(unify ?event dead)(unify ?event missing)(unify ?event lost)(unify ?event impounded)(unify ?event towed)))
       ;steps for branch-2
-      ((!worry-about ?subject ?event))
+      ((!worry-about ?subject ?event)(!think-about money available))
 
       ;preconditions for branch-3
       ; Petty Negative Event (Minor) -> Vanity
       ((or(unify ?event mileage)(unify ?event lifespan)(unify ?event appearance)(unify ?event old)(unify ?event ugly)(unify ?event loud)(unify ?event dirty)(unify ?event gross)(unify ?event clunky)(unify ?event age)(unify ?event oil)(unify ?event gas)))
       ;steps for branch-3
+      ((!worry-about ?subject ?event)(!think-about personal life))
+
+      ;preconditions for branch-X
+      ; NOTHING
+      ()
+      ;steps for branch-X
+      ; NOTHING
       ((!worry-about ?subject ?event))
-
-
-
-    ;preconditions for branch-X
-    ; NOTHING
-    ()
-    ;steps for branch-X
-    ; NOTHING
-    ()
   )
 
     ; Tests if two values are the same for memory assignment.
