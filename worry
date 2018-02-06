@@ -92,7 +92,7 @@
 
     ; The !worry operator continues the vicious cycle of worrying. This lowers
     ; the other bio-levels of the agent.
-    (:operator (!worry)
+    (:operator (!worry-about ?memory)
       ;preconditions
       (
         (bio-level worry me ?w)
@@ -122,7 +122,7 @@
 
     ; In this operator the agent is worrying about the notion that it is worrying,
     ; hence the vicious cycle.
-    (:operator (!worry-about-worrying)
+    (:operator (!worry-about-worrying-about ?memory)
       ;preconditions
       (
         (bio-level worry me ?w)
@@ -237,11 +237,18 @@
       )
 
       ;preconditions for branch-4
-      ()
+      (
+        (worry-memory me ?memory)
+      )
       ;steps for branch-4
       (
-        (!worry)
+        (!worry-about ?memory)
       )
+
+      ;preconditions for branch-5
+      ()
+      ;steps for branch-5
+      ()
     )
 
     ; This method checks how much the agent is currently worried and provides
@@ -261,10 +268,11 @@
       (
         (bio-level worry me ?w)
         (call >= ?w 75)
+        (worry-memory me ?memory)
       )
       ;steps for branch-2
       (
-        (!worry-about-worrying)
+        (!worry-about-worrying-about ?memory)
       )
 
       ;preconditions for branch-3
