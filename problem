@@ -16,11 +16,15 @@
   ; item of worry to serve as a spark.
 
   (
+    ; BIO LEVELS: (unsatisfied) 0 -- 100 (satisfied)
     (bio-level hunger me 50)
     (bio-level bladder me 50)
     (bio-level energy me 50)
+
+    ; WORRY LEVEL: (calm) 0 -- 100 (freaking out)
     (bio-level worry me 50)
-    (memory car-ticket)
+
+    (worry-memory me car-ticket)
   )
 
 
