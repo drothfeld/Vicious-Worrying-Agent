@@ -1,7 +1,7 @@
 # Vicious Worrying Agent
 HTN Planner Domain/Problem
 
-Version 0.0.1
+Version 0.2.3
 
 **Description:**
   - An HTN planner domain/problem being developed for the CMPM 202 course at UC Santa Cruz.
