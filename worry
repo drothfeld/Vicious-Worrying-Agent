@@ -92,7 +92,7 @@
 
     ; The !worry operator continues the vicious cycle of worrying. This lowers
     ; the other bio-levels of the agent.
-    (:operator (!worry-about ?objA ?objB)
+    (:operator (!worry-about ?subject ?event)
       ;preconditions
       (
         (bio-level worry me ?w)
@@ -238,11 +238,11 @@
 
       ;preconditions for branch-4
       (
-        (worry-memory me worry(?obj1 ?obj2))
+        (worry-memory me worry(?subject ?event))
       )
       ;steps for branch-4
       (
-        (analyze-worry-memory worry(?obj1 ?obj2))
+        (analyze-worry-memory-subject-subject worry(?subject ?event))
       )
 
       ;preconditions for branch-5
@@ -275,7 +275,7 @@
       ;steps for branch-2
       (
         ;(!worry-about-worrying-about)
-        ;(analyze-worry-memory ?memory)
+        ;(analyze-worry-memory-subject ?memory)
       )
 
       ;preconditions for branch-3
@@ -288,18 +288,23 @@
 
     ; This method extrapolates the catalyst memory given by the user and
     ; determines possible additional worries this memory can trigger.
-    (:method (analyze-worry-memory worry(?objA ?objB))
+    (:method (analyze-worry-memory-subject-subject worry(?subject ?event))
       ;preconditions for branch-1
+      ; Vehicle is subject
       (
         (or
-          (unify ?objA car)
-          (unify ?objA train)
-          (unify ?objA boat)
+          (unify ?subject car)
+          (unify ?subject train)
+          (unify ?subject boat)
+          (unify ?subject bike)
+          (unify ?subject motorcycle)
+          (unify ?subject automobile)
+          (unify ?subject vehicle)
         )
       )
       ;steps for branch-1
       (
-        (!worry-about ?objA ?objB)
+        (!worry-about ?subject ?event)
       )
 
 

@@ -24,7 +24,7 @@
     ; WORRY LEVEL: (calm) 0 -- 100 (freaking out)
     (bio-level worry me 50)
 
-    ; MEMORY TO START WORRY
+    ; MEMORY TO START WORRY: worry(SUBJECT, EVENT)
     (worry-memory me worry(car ticket))
   )
 
