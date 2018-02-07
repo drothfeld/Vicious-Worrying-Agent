@@ -321,9 +321,7 @@
         )
       )
       ;steps for branch-1
-      (
-        (analyze-worry-memory-event-vehicle ?subject ?event)
-      )
+      ((analyze-worry-memory-event-vehicle ?subject ?event))
 
       ;preconditions for branch-X
       ; NOTHING
@@ -360,7 +358,7 @@
       ()
       ;steps for branch-X
       ; NOTHING
-      ((!worry-about ?subject ?event))
+      ()
   )
 
     ; Tests if two values are the same for memory assignment.
