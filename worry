@@ -309,19 +309,45 @@
     (:method (analyze-worry-memory-subject worry(?subject ?event))
       ;preconditions for branch-1
       ; Vehicle is subject
-      (
-        (or
-          (unify ?subject car)
-          (unify ?subject train)
-          (unify ?subject boat)
-          (unify ?subject bike)
-          (unify ?subject motorcycle)
-          (unify ?subject automobile)
-          (unify ?subject vehicle)
-        )
-      )
+      ((or(unify ?subject car)(unify ?subject train)(unify ?subject boat)(unify ?subject bike)(unify ?subject motorcycle)(unify ?subject automobile)(unify ?subject vehicle)))
       ;steps for branch-1
       ((analyze-worry-memory-event-vehicle ?subject ?event))
+
+      ;preconditions for branch-2
+      ; Relationship is subject
+      (
+        (or
+          (unify ?subject relationship)
+          (unify ?subject boyfriend)
+          (unify ?subject girlfriend)
+          (unify ?subject lover)
+          (unify ?subject fiance)
+          (unify ?subject wife)
+          (unify ?subject husband)
+          (unify ?subject friend)
+          (unify ?subject sister)
+          (unify ?subject brother)
+          (unify ?subject sibling)
+          (unify ?subject father)
+          (unify ?subject mother)
+          (unify ?subject daughter)
+          (unify ?subject son)
+          (unify ?subject child)
+          (unify ?subject children)
+          (unify ?subject family)
+          (unify ?subject uncle)
+          (unify ?subject aunt)
+          (unify ?subject cousin)
+          (unify ?subject date)
+          (unify ?subject teacher)
+          (unify ?subject professor)
+          (unify ?subject rival)
+          (unify ?subject dad)
+          (unify ?subject mom)
+        )
+      )
+      ;steps for branch-2
+      ((analyze-worry-memory-event-relationship ?subject ?event))
 
       ;preconditions for branch-X
       ; NOTHING
@@ -359,6 +385,36 @@
       ;steps for branch-X
       ; NOTHING
       ()
+  )
+
+  ; After determining which subject category the memory is from [RELATIONSHIP],
+  ; the event for that subject is analyzed to determine which new memory
+  ; will be chained.
+  (:method (analyze-worry-memory-event-relationship ?subject ?event)
+    ;preconditions for branch-1
+    ; Destruction Negative Event (Extreme) -> Health
+    ((or(unify ?event death)(unify ?event passed)(unify ?event tragedy)(unify ?event accident)(unify ?event emergency)(unify ?event health)))
+    ;steps for branch-1
+    ((!worry-about ?subject ?event)(!think-about family health))
+
+    ;preconditions for branch-2
+    ; Personal Negative Event (Major) -> Money/Status
+    ((or(unify ?event breakup)(unify ?event fight)(unify ?event argument)(unify ?event cheating)(unify ?event betray)(unify ?event lying)(unify ?event ignoring)(unify ?event yelling)(unify ?event angry)(unify ?event mad)(unify ?event upset)(unify ?event money)(unify ?event happiness)))
+    ;steps for branch-2
+    ((!worry-about ?subject ?event)(!think-about personal happiness))
+
+    ;preconditions for branch-3
+    ; Petty Negative Event (Minor) -> Vanity
+    ((or(unify ?event event)(unify ?event wedding)(unify ?event reunion)(unify ?event date)(unify ?event engagement)(unify ?event party)(unify ?event birthday)(unify ?event holiday)(unify ?event vacation)(unify ?event honeymoon)(unify ?event anniversary)))
+    ;steps for branch-3
+    ((!worry-about ?subject ?event)(!think-about personal hesitation))
+
+    ;preconditions for branch-X
+    ; NOTHING
+    ()
+    ;steps for branch-X
+    ; NOTHING
+    ()
   )
 
     ; Tests if two values are the same for memory assignment.
