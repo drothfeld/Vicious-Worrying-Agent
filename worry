@@ -325,7 +325,7 @@
 
       ; NOTHING
       ()
-      ((!worry-about ?subject ?event))
+      ((!worry-about ?subject ?event)(!think-about personal happiness))
     )
 
     ; VEHICLE
@@ -344,7 +344,7 @@
 
       ; NOTHING
       ()
-      ((!worry-about ?subject ?event))
+      ((!worry-about ?subject ?event)(!think-about money available))
   )
 
   ; RELATIONSHIP
@@ -363,7 +363,7 @@
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event))
+    ((!worry-about ?subject ?event)(!think-about being alone))
   )
 
   ; FINANCE
@@ -382,7 +382,7 @@
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event))
+    ((!worry-about ?subject ?event)(!think-about creditcard overdue))
   )
 
   ; PERSONAL
@@ -401,7 +401,7 @@
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event))
+    ((!worry-about ?subject ?event)(!think-about relationship argument))
   )
 
     ; Tests if two values are the same for memory assignment.
