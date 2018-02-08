@@ -308,11 +308,11 @@
     ; determines possible additional worries this memory can trigger.
     (:method (analyze-worry-memory-subject worry(?subject ?event))
       ; VEHICLE is subject
-      ((or(unify ?subject car)(unify ?subject train)(unify ?subject boat)(unify ?subject bike)(unify ?subject motorcycle)(unify ?subject automobile)(unify ?subject vehicle)(unify ?subject plane)(unify ?subject airplane)))
+      ((or(unify ?subject car)(unify ?subject driving)(unify ?subject train)(unify ?subject boat)(unify ?subject bike)(unify ?subject motorcycle)(unify ?subject automobile)(unify ?subject vehicle)(unify ?subject plane)(unify ?subject airplane)))
       ((analyze-worry-memory-event-vehicle ?subject ?event))
 
       ; RELATIONSHIP is subject
-      ((or(unify ?subject relationship)(unify ?subject boyfriend)(unify ?subject girlfriend)(unify ?subject lover)(unify ?subject fiance)(unify ?subject wife)(unify ?subject husband)(unify ?subject friend)(unify ?subject sister)(unify ?subject brother)(unify ?subject sibling)(unify ?subject father)(unify ?subject mother)(unify ?subject daughter)(unify ?subject son)(unify ?subject child)(unify ?subject children)(unify ?subject family)(unify ?subject uncle)(unify ?subject aunt)(unify ?subject cousin)(unify ?subject date)(unify ?subject teacher)(unify ?subject friends)(unify ?subject professor)(unify ?subject rival)(unify ?subject dad)(unify ?subject mom)(unify ?subject crush)))
+      ((or(unify ?subject relationship)(unify ?subject boyfriend)(unify ?subject girlfriend)(unify ?subject lover)(unify ?subject fiance)(unify ?subject wife)(unify ?subject husband)(unify ?subject friend)(unify ?subject sister)(unify ?subject brother)(unify ?subject sibling)(unify ?subject father)(unify ?subject mother)(unify ?subject daughter)(unify ?subject son)(unify ?subject child)(unify ?subject children)(unify ?subject family)(unify ?subject uncle)(unify ?subject aunt)(unify ?subject cousin)(unify ?subject date)(unify ?subject friends)(unify ?subject rival)(unify ?subject dad)(unify ?subject mom)(unify ?subject crush)))
       ((analyze-worry-memory-event-relationship ?subject ?event))
 
       ; FINANCE is subject
@@ -322,6 +322,10 @@
       ; PERSONAL is subject
       ((or(unify ?subject personal)(unify ?subject my)(unify ?subject getting)(unify ?subject being)(unify ?subject becoming)(unify ?subject im)(unify ?subject catching)(unify ?subject losing)(unify ?subject giving)(unify ?subject hurting)(unify ?subject breaking)(unify ?subject feeling)(unify ?subject owning)(unify ?subject having)(unify ?subject trying)(unify ?subject my)))
       ((analyze-worry-memory-event-personal ?subject ?event))
+
+      ; ACADEMIC is subject
+      ((or(unify ?subject math)(unify ?subject english)(unify ?subject spanish)(unify ?subject language)(unify ?subject writing)(unify ?subject science)(unify ?subject chemistry)(unify ?subject biology)(unify ?subject class)(unify ?subject course)(unify ?subject subject)(unify ?subject history)(unify ?subject teacher)(unify ?subject professor)(unify ?subject principal)(unify ?subject library)(unify ?subject classroom)(unify ?subject presentation)(unify ?subject test)(unify ?subject exam)(unify ?subject grade)(unify ?subject project)(unify ?subject gpa)(unify ?subject computerscience)(unify ?subject art)(unify ?subject midterm)(unify ?subject final)(unify ?subject school)(unify ?subject university)(unify ?subject sat)(unify ?subject gre)))
+      ((analyze-worry-memory-event-academic ?subject ?event))
 
       ; NOTHING
       ()
@@ -402,6 +406,25 @@
     ; NOTHING
     ()
     ((!worry-about ?subject ?event)(!think-about relationship argument))
+  )
+
+  ; ACADEMIC
+  (:method (analyze-worry-memory-event-academic ?subject ?event)
+    ; Huge Negative/Positive Event (Extreme) -> End of Academic Career
+    ((or(unify ?event failed)(unify ?event failing)(unify ?event fail)(unify ?event suspended)(unify ?event expulsion)(unify ?event expelled)(unify ?event shooting)))
+    ((!worry-about ?subject ?event)(!think-about family disappointment))
+
+    ; Internal/External Struggle (Major) -> Difficult Situation
+    ((or(unify ?event test)(unify ?event exam)(unify ?event midterm)(unify ?event final)(unify ?event difficulty)(unify ?event problems)(unify ?event struggle)(unify ?event score)(unify ?event grade)(unify ?event grades)))
+    ((!worry-about ?subject ?event)(!think-about driving home))
+
+    ; Petty Negative Event (Minor) -> Personal Inconvenience/Boredom
+    ((or(unify ?event class)(unify ?event course)(unify ?event teacher)(unify ?event professor)(unify ?event classroom)(unify ?event bored)(unify ?event boring)(unify ?event boredom)))
+    ((!worry-about ?subject ?event)(!think-about texting friend))
+
+    ; NOTHING
+    ()
+    ((!worry-about ?subject ?event)(!think-about salary stability))
   )
 
     ; Tests if two values are the same for memory assignment.
