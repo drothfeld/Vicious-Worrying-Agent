@@ -312,21 +312,23 @@
       ((analyze-worry-memory-event-vehicle ?subject ?event))
 
       ; RELATIONSHIP is subject
-      ((or(unify ?subject relationship)(unify ?subject boyfriend)(unify ?subject girlfriend)(unify ?subject lover)(unify ?subject fiance)(unify ?subject wife)(unify ?subject husband)(unify ?subject friend)(unify ?subject sister)(unify ?subject brother)(unify ?subject sibling)(unify ?subject father)(unify ?subject mother)(unify ?subject daughter)(unify ?subject son)(unify ?subject child)(unify ?subject children)(unify ?subject family)(unify ?subject uncle)(unify ?subject aunt)(unify ?subject cousin)(unify ?subject date)(unify ?subject teacher)(unify ?subject professor)(unify ?subject rival)(unify ?subject dad)(unify ?subject mom)(unify ?subject crush)))
+      ((or(unify ?subject relationship)(unify ?subject boyfriend)(unify ?subject girlfriend)(unify ?subject lover)(unify ?subject fiance)(unify ?subject wife)(unify ?subject husband)(unify ?subject friend)(unify ?subject sister)(unify ?subject brother)(unify ?subject sibling)(unify ?subject father)(unify ?subject mother)(unify ?subject daughter)(unify ?subject son)(unify ?subject child)(unify ?subject children)(unify ?subject family)(unify ?subject uncle)(unify ?subject aunt)(unify ?subject cousin)(unify ?subject date)(unify ?subject teacher)(unify ?subject friends)(unify ?subject professor)(unify ?subject rival)(unify ?subject dad)(unify ?subject mom)(unify ?subject crush)))
       ((analyze-worry-memory-event-relationship ?subject ?event))
 
       ; FINANCE is subject
       ((or(unify ?subject money)(unify ?subject funds)(unify ?subject bank)(unify ?subject account)(unify ?subject wallet)(unify ?subject creditcard)(unify ?subject debitcard)(unify ?subject visa)(unify ?subject mastercard)(unify ?subject checkings)(unify ?subject savings)(unify ?subject trust)(unify ?subject cash)(unify ?subject loans)(unify ?subject taxes)(unify ?subject finances)(unify ?subject credit)(unify ?subject mortgage)(unify ?subject tuition)(unify ?subject bill)(unify ?subject check)(unify ?subject bond)(unify ?subject epay)(unify ?subject applepay)(unify ?subject venmo)(unify ?subject paypal)(unify ?subject paycheck)(unify ?subject refund)(unify ?subject irs)(unify ?subject accountant)(unify ?subject subscription)(unify ?subject salary)(unify ?subject tip)(unify ?subject financial)(unify ?subject stock)(unify ?subject investment)))
       ((analyze-worry-memory-event-finance ?subject ?event))
 
+      ; PERSONAL is subject
+      ((or(unify ?subject personal)(unify ?subject my)(unify ?subject getting)(unify ?subject being)(unify ?subject becoming)(unify ?subject im)(unify ?subject catching)(unify ?subject losing)(unify ?subject giving)(unify ?subject hurting)(unify ?subject breaking)(unify ?subject feeling)(unify ?subject owning)(unify ?subject having)(unify ?subject trying)(unify ?subject my)))
+      ((analyze-worry-memory-event-personal ?subject ?event))
+
       ; NOTHING
       ()
       ((!worry-about ?subject ?event))
     )
 
-    ; After determining which subject category the memory is from [VEHICLE],
-    ; the event for that subject is analyzed to determine which new memory
-    ; will be chained.
+    ; VEHICLE
     (:method (analyze-worry-memory-event-vehicle ?subject ?event)
       ; Destruction Negative Event (Extreme) -> Health
       ((or(unify ?event crash)(unify ?event accident)(unify ?event destroyed)(unify ?event explosion)(unify ?event fire)(unify ?event terrorism)))
@@ -345,16 +347,14 @@
       ((!worry-about ?subject ?event))
   )
 
-  ; After determining which subject category the memory is from [RELATIONSHIP],
-  ; the event for that subject is analyzed to determine which new memory
-  ; will be chained.
+  ; RELATIONSHIP
   (:method (analyze-worry-memory-event-relationship ?subject ?event)
     ; Destruction Negative Event (Extreme) -> Health
-    ((or(unify ?event death)(unify ?event passed)(unify ?event tragedy)(unify ?event accident)(unify ?event emergency)(unify ?event health)))
+    ((or(unify ?event death)(unify ?event passed)(unify ?event tragedy)(unify ?event accident)(unify ?event emergency)))
     ((!worry-about ?subject ?event)(!think-about family health))
 
     ; Personal Negative Event (Major) -> Money/Status
-    ((or(unify ?event breakup)(unify ?event fight)(unify ?event argument)(unify ?event cheating)(unify ?event betray)(unify ?event lying)(unify ?event ignoring)(unify ?event yelling)(unify ?event angry)(unify ?event mad)(unify ?event upset)(unify ?event money)(unify ?event happiness)))
+    ((or(unify ?event breakup)(unify ?event fight)(unify ?event argument)(unify ?event health)(unify ?event cheating)(unify ?event betray)(unify ?event lying)(unify ?event ignoring)(unify ?event yelling)(unify ?event angry)(unify ?event mad)(unify ?event upset)(unify ?event money)(unify ?event happiness)))
     ((!worry-about ?subject ?event)(!think-about personal happiness))
 
     ; Petty Negative Event (Minor) -> Vanity
@@ -366,9 +366,7 @@
     ((!worry-about ?subject ?event))
   )
 
-  ; After determining which subject category the memory is from [FINANCE],
-  ; the event for that subject is analyzed to determine which new memory
-  ; will be chained.
+  ; FINANCE
   (:method (analyze-worry-memory-event-finance ?subject ?event)
     ; Destruction Negative Event (Extreme) -> Life Changing
     ((or(unify ?event hacked)(unify ?event stolen)(unify ?event robbed)(unify ?event empty)(unify ?event fraud)(unify ?event default)(unify ?event broke)(unify ?event bankrupt)))
@@ -381,6 +379,25 @@
     ; Petty Negative Event (Minor) -> Personal Inconvenience
     ((or(unify ?event stability)(unify ?event total)(unify ?event sum)(unify ?event status)(unify ?event investment)(unify ?event total)(unify ?event transaction)))
     ((!worry-about ?subject ?event)(!think-about personal stability))
+
+    ; NOTHING
+    ()
+    ((!worry-about ?subject ?event))
+  )
+
+  ; PERSONAL
+  (:method (analyze-worry-memory-event-personal ?subject ?event)
+    ; Huge Negative/Positive Event (Extreme) -> Life Changing
+    ((or(unify ?event married)(unify ?event kids)(unify ?event arrested)(unify ?event killed)(unify ?event death)(unify ?event dead)(unify ?event cancer)(unify ?event aids)(unify ?event hiv)(unify ?event mugged)(unify ?event hospitalized)(unify ?event divorced)(unify ?event shot)(unify ?event stabbed)(unify ?event impaled)(unify ?event depressed)(unify ?event survival)))
+    ((!worry-about ?subject ?event)(!think-about getting hurt))
+
+    ; Internal/External Struggle (Major) -> Difficult Situation
+    ((or(unify ?event poor)(unify ?event broke)(unify ?event sick)(unify ?event health)(unify ?event happiness)(unify ?event flu)(unify ?event fever)(unify ?event love)(unify ?event dumped)(unify ?event fired)(unify ?event hurt)(unify ?event empty)(unify ?event old)(unify ?event weak)(unify ?event helpless)(unify ?event terrified)(unify ?event alone)(unify ?event insecure)))
+    ((!worry-about ?subject ?event)(!think-about becoming sad))
+
+    ; Petty Negative Event (Minor) -> Personal Inconvenience
+    ((or(unify ?event cold)(unify ?event hot)(unify ?event sad)(unify ?event happy)(unify ?event hesitant)(unify ?event hesitation)(unify ?event upset)(unify ?event anger)(unify ?event angry)(unify ?event tired)))
+    ((!worry-about ?subject ?event)(!think-about friends death))
 
     ; NOTHING
     ()
