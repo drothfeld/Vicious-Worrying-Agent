@@ -307,53 +307,20 @@
     ; This method extrapolates the catalyst memory given by the user and
     ; determines possible additional worries this memory can trigger.
     (:method (analyze-worry-memory-subject worry(?subject ?event))
-      ;preconditions for branch-1
-      ; Vehicle is subject
-      ((or(unify ?subject car)(unify ?subject train)(unify ?subject boat)(unify ?subject bike)(unify ?subject motorcycle)(unify ?subject automobile)(unify ?subject vehicle)))
-      ;steps for branch-1
+      ; VEHICLE is subject
+      ((or(unify ?subject car)(unify ?subject train)(unify ?subject boat)(unify ?subject bike)(unify ?subject motorcycle)(unify ?subject automobile)(unify ?subject vehicle)(unify ?subject plane)(unify ?subject airplane)))
       ((analyze-worry-memory-event-vehicle ?subject ?event))
 
-      ;preconditions for branch-2
-      ; Relationship is subject
-      (
-        (or
-          (unify ?subject relationship)
-          (unify ?subject boyfriend)
-          (unify ?subject girlfriend)
-          (unify ?subject lover)
-          (unify ?subject fiance)
-          (unify ?subject wife)
-          (unify ?subject husband)
-          (unify ?subject friend)
-          (unify ?subject sister)
-          (unify ?subject brother)
-          (unify ?subject sibling)
-          (unify ?subject father)
-          (unify ?subject mother)
-          (unify ?subject daughter)
-          (unify ?subject son)
-          (unify ?subject child)
-          (unify ?subject children)
-          (unify ?subject family)
-          (unify ?subject uncle)
-          (unify ?subject aunt)
-          (unify ?subject cousin)
-          (unify ?subject date)
-          (unify ?subject teacher)
-          (unify ?subject professor)
-          (unify ?subject rival)
-          (unify ?subject dad)
-          (unify ?subject mom)
-        )
-      )
-      ;steps for branch-2
+      ; RELATIONSHIP is subject
+      ((or(unify ?subject relationship)(unify ?subject boyfriend)(unify ?subject girlfriend)(unify ?subject lover)(unify ?subject fiance)(unify ?subject wife)(unify ?subject husband)(unify ?subject friend)(unify ?subject sister)(unify ?subject brother)(unify ?subject sibling)(unify ?subject father)(unify ?subject mother)(unify ?subject daughter)(unify ?subject son)(unify ?subject child)(unify ?subject children)(unify ?subject family)(unify ?subject uncle)(unify ?subject aunt)(unify ?subject cousin)(unify ?subject date)(unify ?subject teacher)(unify ?subject professor)(unify ?subject rival)(unify ?subject dad)(unify ?subject mom)(unify ?subject crush)))
       ((analyze-worry-memory-event-relationship ?subject ?event))
 
-      ;preconditions for branch-X
+      ; FINANCE is subject
+      ((or(unify ?subject money)(unify ?subject funds)(unify ?subject bank)(unify ?subject account)(unify ?subject wallet)(unify ?subject creditcard)(unify ?subject debitcard)(unify ?subject visa)(unify ?subject mastercard)(unify ?subject checkings)(unify ?subject savings)(unify ?subject trust)(unify ?subject cash)(unify ?subject loans)(unify ?subject taxes)(unify ?subject finances)(unify ?subject credit)(unify ?subject mortgage)(unify ?subject tuition)(unify ?subject bill)(unify ?subject check)(unify ?subject bond)(unify ?subject epay)(unify ?subject applepay)(unify ?subject venmo)(unify ?subject paypal)(unify ?subject paycheck)(unify ?subject refund)(unify ?subject irs)(unify ?subject accountant)(unify ?subject subscription)(unify ?subject salary)(unify ?subject tip)(unify ?subject financial)(unify ?subject stock)(unify ?subject investment)))
+      ((analyze-worry-memory-event-finance ?subject ?event))
+
       ; NOTHING
       ()
-      ;steps for branch-X
-      ; NOTHING
       ((!worry-about ?subject ?event))
     )
 
@@ -361,60 +328,63 @@
     ; the event for that subject is analyzed to determine which new memory
     ; will be chained.
     (:method (analyze-worry-memory-event-vehicle ?subject ?event)
-      ;preconditions for branch-1
       ; Destruction Negative Event (Extreme) -> Health
-      ((or(unify ?event crash)(unify ?event accident)(unify ?event destroyed)(unify ?event explosion)(unify ?event fire)))
-      ;steps for branch-1
+      ((or(unify ?event crash)(unify ?event accident)(unify ?event destroyed)(unify ?event explosion)(unify ?event fire)(unify ?event terrorism)))
       ((!worry-about ?subject ?event)(!think-about everyone safe))
 
-      ;preconditions for branch-2
       ; Personal Negative Event (Major) -> Money
-      ((or(unify ?event ticket)(unify ?event stolen)(unify ?event smashed)(unify ?event dented)(unify ?event hit)(unify ?event broken)(unify ?event dead)(unify ?event missing)(unify ?event lost)(unify ?event impounded)(unify ?event towed)))
-      ;steps for branch-2
-      ((!worry-about ?subject ?event)(!think-about money available))
+      ((or(unify ?event ticket)(unify ?event stolen)(unify ?event smashed)(unify ?event dented)(unify ?event hit)(unify ?event broken)(unify ?event dead)(unify ?event missing)(unify ?event lost)(unify ?event impounded)(unify ?event towed)(unify ?event late)(unify ?event theft)(unify ?event robbery)(unify ?event insurance)))
+      ((!worry-about ?subject ?event)(!think-about money amount))
 
-      ;preconditions for branch-3
       ; Petty Negative Event (Minor) -> Vanity
-      ((or(unify ?event mileage)(unify ?event lifespan)(unify ?event appearance)(unify ?event old)(unify ?event ugly)(unify ?event loud)(unify ?event dirty)(unify ?event gross)(unify ?event clunky)(unify ?event age)(unify ?event oil)(unify ?event gas)))
-      ;steps for branch-3
+      ((or(unify ?event mileage)(unify ?event lifespan)(unify ?event appearance)(unify ?event old)(unify ?event ugly)(unify ?event noise)(unify ?event dirty)(unify ?event gross)(unify ?event clunky)(unify ?event age)(unify ?event oil)(unify ?event gas)))
       ((!worry-about ?subject ?event)(!think-about personal life))
 
-      ;preconditions for branch-X
       ; NOTHING
       ()
-      ;steps for branch-X
-      ; NOTHING
-      ()
+      ((!worry-about ?subject ?event))
   )
 
   ; After determining which subject category the memory is from [RELATIONSHIP],
   ; the event for that subject is analyzed to determine which new memory
   ; will be chained.
   (:method (analyze-worry-memory-event-relationship ?subject ?event)
-    ;preconditions for branch-1
     ; Destruction Negative Event (Extreme) -> Health
     ((or(unify ?event death)(unify ?event passed)(unify ?event tragedy)(unify ?event accident)(unify ?event emergency)(unify ?event health)))
-    ;steps for branch-1
     ((!worry-about ?subject ?event)(!think-about family health))
 
-    ;preconditions for branch-2
     ; Personal Negative Event (Major) -> Money/Status
     ((or(unify ?event breakup)(unify ?event fight)(unify ?event argument)(unify ?event cheating)(unify ?event betray)(unify ?event lying)(unify ?event ignoring)(unify ?event yelling)(unify ?event angry)(unify ?event mad)(unify ?event upset)(unify ?event money)(unify ?event happiness)))
-    ;steps for branch-2
     ((!worry-about ?subject ?event)(!think-about personal happiness))
 
-    ;preconditions for branch-3
     ; Petty Negative Event (Minor) -> Vanity
     ((or(unify ?event event)(unify ?event wedding)(unify ?event reunion)(unify ?event date)(unify ?event engagement)(unify ?event party)(unify ?event birthday)(unify ?event holiday)(unify ?event vacation)(unify ?event honeymoon)(unify ?event anniversary)))
-    ;steps for branch-3
     ((!worry-about ?subject ?event)(!think-about personal hesitation))
 
-    ;preconditions for branch-X
     ; NOTHING
     ()
-    ;steps for branch-X
+    ((!worry-about ?subject ?event))
+  )
+
+  ; After determining which subject category the memory is from [FINANCE],
+  ; the event for that subject is analyzed to determine which new memory
+  ; will be chained.
+  (:method (analyze-worry-memory-event-finance ?subject ?event)
+    ; Destruction Negative Event (Extreme) -> Life Changing
+    ((or(unify ?event hacked)(unify ?event stolen)(unify ?event robbed)(unify ?event empty)(unify ?event fraud)(unify ?event default)(unify ?event broke)(unify ?event bankrupt)))
+    ((!worry-about ?subject ?event)(!think-about personal survival))
+
+    ; Personal Negative Event (Major) -> Difficult Situation
+    ((or(unify ?event poor)(unify ?event due)(unify ?event payment)(unify ?event expired)(unify ?event pastdue)(unify ?event overdue)(unify ?event fee)(unify ?event frozen)(unify ?event charged)(unify ?event warning)(unify ?event error)(unify ?event available)(unify ?event amount)(unify ?event bill)(unify ?event tax)))
+    ((!worry-about ?subject ?event)(!think-about financial stability))
+
+    ; Petty Negative Event (Minor) -> Personal Inconvenience
+    ((or(unify ?event stability)(unify ?event total)(unify ?event sum)(unify ?event status)(unify ?event investment)(unify ?event total)(unify ?event transaction)))
+    ((!worry-about ?subject ?event)(!think-about personal stability))
+
     ; NOTHING
     ()
+    ((!worry-about ?subject ?event))
   )
 
     ; Tests if two values are the same for memory assignment.
