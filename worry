@@ -572,21 +572,81 @@
   ; PERSONAL
   (:method (analyze-worry-memory-event-personal ?subject ?event)
     ; Huge Negative/Positive Event (Extreme) -> Life Changing
-    ((or(unify ?event married)(unify ?event kids)(unify ?event arrested)(unify ?event killed)(unify ?event death)(unify ?event dead)(unify ?event cancer)(unify ?event aids)(unify ?event hiv)(unify ?event mugged)(unify ?event hospitalized)(unify ?event divorced)(unify ?event shot)(unify ?event stabbed)(unify ?event impaled)(unify ?event depressed)(unify ?event survival)))
-    ((!worry-about ?subject ?event)(!!think-about getting hurt))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event married)(unify ?event kids)(unify ?event arrested)(unify ?event killed)(unify ?event death)(unify ?event dead)(unify ?event cancer)(unify ?event aids)(unify ?event hiv)(unify ?event mugged)(unify ?event hospitalized)(unify ?event divorced)(unify ?event shot)(unify ?event stabbed)(unify ?event impaled)(unify ?event depressed)(unify ?event survival)))
+    ((personal-extreme ?memRoll personal ?subject ?event))
 
     ; Internal/External Struggle (Major) -> Difficult Situation
-    ((or(unify ?event poor)(unify ?event broke)(unify ?event sick)(unify ?event health)(unify ?event happiness)(unify ?event flu)(unify ?event fever)(unify ?event love)(unify ?event dumped)(unify ?event fired)(unify ?event hurt)(unify ?event empty)(unify ?event old)(unify ?event weak)(unify ?event helpless)(unify ?event terrified)(unify ?event alone)(unify ?event insecure)))
-    ((!worry-about ?subject ?event)(!!think-about becoming sad))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event poor)(unify ?event broke)(unify ?event sick)(unify ?event health)(unify ?event happiness)(unify ?event flu)(unify ?event fever)(unify ?event love)(unify ?event dumped)(unify ?event fired)(unify ?event hurt)(unify ?event empty)(unify ?event old)(unify ?event weak)(unify ?event helpless)(unify ?event terrified)(unify ?event alone)(unify ?event insecure)))
+    ((personal-major ?memRoll personal ?subject ?event))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience
-    ((or(unify ?event cold)(unify ?event hot)(unify ?event sad)(unify ?event happy)(unify ?event hesitant)(unify ?event hesitation)(unify ?event upset)(unify ?event anger)(unify ?event angry)(unify ?event tired)))
-    ((!worry-about ?subject ?event)(!!think-about friends death))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event cold)(unify ?event warm)(unify ?event sad)(unify ?event happy)(unify ?event hesitant)(unify ?event hesitation)(unify ?event upset)(unify ?event anger)(unify ?event angry)(unify ?event tired)))
+    ((personal-minor ?memRoll personal ?subject ?event))
 
     ; NOTHING
     ()
     ((!worry-about ?subject ?event)(!!think-about relationship argument))
   )
+
+  ; PERSONAL - EXTREME
+  (:method (personal-extreme ?randomroll ?topic ?subject ?event)
+     ; First Possibility
+     ((unify ?randomroll 1))
+     ((!worry-about ?subject ?event)(!!think-about getting hurt))
+
+     ; Second Possibility
+     ((unify ?randomroll 2))
+     ((!worry-about ?subject ?event)(!!think-about having kids))
+
+     ; Third Possibility
+     ((unify ?randomroll 3))
+     ((!worry-about ?subject ?event)(!!think-about being rejected))
+
+     ; Fourth Possibility
+     ((unify ?randomroll 4))
+     ((!worry-about ?subject ?event)(!!think-about getting divorced))
+ )
+
+ ; PERSONAL - MAJOR
+ (:method (personal-major ?randomroll ?topic ?subject ?event)
+   ; First Possibility
+   ((unify ?randomroll 1))
+   ((!worry-about ?subject ?event)(!!think-about becoming sad))
+
+   ; Second Possibility
+   ((unify ?randomroll 2))
+   ((!worry-about ?subject ?event)(!!think-about being happy))
+
+   ; Third Possibility
+   ((unify ?randomroll 3))
+   ((!worry-about ?subject ?event)(!!think-about getting angry))
+
+   ; Fourth Possibility
+   ((unify ?randomroll 4))
+   ((!worry-about ?subject ?event)(!!think-about family tragedy))
+ )
+
+ ; PERSONAL - MINOR
+ (:method (personal-minor ?randomroll ?topic ?subject ?event)
+   ; First Possibility
+   ((unify ?randomroll 1))
+   ((!worry-about ?subject ?event)(!!think-about friends death))
+
+   ; Second Possibility
+   ((unify ?randomroll 2))
+   ((!worry-about ?subject ?event)(!!think-about being cold))
+
+   ; Third Possibility
+   ((unify ?randomroll 3))
+   ((!worry-about ?subject ?event)(!!think-about being warm))
+
+   ; Fourth Possibility
+   ((unify ?randomroll 4))
+   ((!worry-about ?subject ?event)(!!think-about savings total))
+ )
 
   ; ACADEMIC
   (:method (analyze-worry-memory-event-academic ?subject ?event)
