@@ -90,10 +90,10 @@
       ()
     )
 
-    ; This operator changes the memory the agent is worrying about based
+    ; This internal operator changes the memory the agent is worrying about based
     ; on how it was analyzed in analyze-worry-memory-subject and
     ; analyze-worry-memory-event-SUBJECT.
-    (:operator (!think-about ?newSubject ?newEvent)
+    (:operator (!!think-about ?newSubject ?newEvent)
       ;preconditions
       (
         (worry-memory me worry(?subject ?event))
@@ -329,7 +329,7 @@
 
       ; NOTHING
       ()
-      ((!worry-about ?subject ?event)(!think-about personal happiness))
+      ((!worry-about ?subject ?event)(!!think-about personal happiness))
     )
 
     ; VEHICLE
@@ -351,140 +351,200 @@
 
       ; NOTHING
       ()
-      ((!worry-about ?subject ?event)(!think-about money available))
+      ((!worry-about ?subject ?event)(!!think-about money available))
   )
 
  ; VEHICLE - EXTREME
  (:method (vehicle-extreme ?randomroll ?topic ?subject ?event)
     ; First Possibility
     ((unify ?randomroll 1))
-    ((!worry-about ?subject ?event)(!think-about everyone safe))
+    ((!worry-about ?subject ?event)(!!think-about everyone safe))
 
     ; Second Possibility
     ((unify ?randomroll 2))
-    ((!worry-about ?subject ?event)(!think-about insurance amount))
+    ((!worry-about ?subject ?event)(!!think-about insurance amount))
 
     ; Third Possibility
     ((unify ?randomroll 3))
-    ((!worry-about ?subject ?event)(!think-about getting killed))
+    ((!worry-about ?subject ?event)(!!think-about getting killed))
 
     ; Fourth Possibility
     ((unify ?randomroll 4))
-    ((!worry-about ?subject ?event)(!think-about school carpool))
+    ((!worry-about ?subject ?event)(!!think-about school carpool))
 )
 
 ; VEHICLE - MAJOR
 (:method (vehicle-major ?randomroll ?topic ?subject ?event)
   ; First Possibility
   ((unify ?randomroll 1))
-  ((!worry-about ?subject ?event)(!think-about money available))
+  ((!worry-about ?subject ?event)(!!think-about money available))
 
   ; Second Possibility
   ((unify ?randomroll 2))
-  ((!worry-about ?subject ?event)(!think-about train commute))
+  ((!worry-about ?subject ?event)(!!think-about train commute))
 
   ; Third Possibility
   ((unify ?randomroll 3))
-  ((!worry-about ?subject ?event)(!think-about getting upset))
+  ((!worry-about ?subject ?event)(!!think-about getting upset))
 
   ; Fourth Possibility
   ((unify ?randomroll 4))
-  ((!worry-about ?subject ?event)(!think-about bill total))
+  ((!worry-about ?subject ?event)(!!think-about bill total))
 )
 
 ; VEHICLE - MINOR
 (:method (vehicle-minor ?randomroll ?topic ?subject ?event)
   ; First Possibility
   ((unify ?randomroll 1))
-  ((!worry-about ?subject ?event)(!think-about personal appearance))
+  ((!worry-about ?subject ?event)(!!think-about personal appearance))
 
   ; Second Possibility
   ((unify ?randomroll 2))
-  ((!worry-about ?subject ?event)(!think-about being bored))
+  ((!worry-about ?subject ?event)(!!think-about being bored))
 
   ; Third Possibility
   ((unify ?randomroll 3))
-  ((!worry-about ?subject ?event)(!think-about cash status))
+  ((!worry-about ?subject ?event)(!!think-about cash status))
 
   ; Fourth Possibility
   ((unify ?randomroll 4))
-  ((!worry-about ?subject ?event)(!think-about school test))
+  ((!worry-about ?subject ?event)(!!think-about school test))
 )
 
   ; RELATIONSHIP
   (:method (analyze-worry-memory-event-relationship ?subject ?event)
     ; Destruction Negative Event (Extreme) -> Health
-    ((or(unify ?event death)(unify ?event passed)(unify ?event tragedy)(unify ?event accident)(unify ?event emergency)))
-    ((!worry-about ?subject ?event)(!think-about family health))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event death)(unify ?event passed)(unify ?event tragedy)(unify ?event accident)(unify ?event emergency)))
+    ((relationship-extreme ?memRoll relationship ?subject ?event))
 
     ; Personal Negative Event (Major) -> Money/Status
-    ((or(unify ?event breakup)(unify ?event fight)(unify ?event argument)(unify ?event health)(unify ?event cheating)(unify ?event betray)(unify ?event lying)(unify ?event ignoring)(unify ?event yelling)(unify ?event angry)(unify ?event mad)(unify ?event upset)(unify ?event money)(unify ?event happiness)(unify ?event safety)))
-    ((!worry-about ?subject ?event)(!think-about personal happiness))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event breakup)(unify ?event fight)(unify ?event argument)(unify ?event health)(unify ?event cheating)(unify ?event betray)(unify ?event lying)(unify ?event ignoring)(unify ?event yelling)(unify ?event angry)(unify ?event mad)(unify ?event upset)(unify ?event money)(unify ?event happiness)(unify ?event safety)))
+    ((relationship-major ?memRoll relationship ?subject ?event))
 
     ; Petty Negative Event (Minor) -> Vanity
-    ((or(unify ?event event)(unify ?event wedding)(unify ?event reunion)(unify ?event date)(unify ?event engagement)(unify ?event party)(unify ?event birthday)(unify ?event holiday)(unify ?event vacation)(unify ?event honeymoon)(unify ?event anniversary)))
-    ((!worry-about ?subject ?event)(!think-about personal hesitation))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event event)(unify ?event wedding)(unify ?event reunion)(unify ?event date)(unify ?event engagement)(unify ?event party)(unify ?event birthday)(unify ?event holiday)(unify ?event vacation)(unify ?event honeymoon)(unify ?event anniversary)))
+    ((relationship-minor ?memRoll relationship ?subject ?event))
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event)(!think-about being alone))
+    ((!worry-about ?subject ?event)(!!think-about being alone))
   )
+
+  ; RELATIONSHIP - EXTREME
+  (:method (relationship-extreme ?randomroll ?topic ?subject ?event)
+     ; First Possibility
+     ((unify ?randomroll 1))
+     ((!worry-about ?subject ?event)(!!think-about family health))
+
+     ; Second Possibility
+     ((unify ?randomroll 2))
+     ((!worry-about ?subject ?event)(!!think-about mom death))
+
+     ; Third Possibility
+     ((unify ?randomroll 3))
+     ((!worry-about ?subject ?event)(!!think-about dad death))
+
+     ; Fourth Possibility
+     ((unify ?randomroll 4))
+     ((!worry-about ?subject ?event)(!!think-about becoming depressed))
+ )
+
+ ; RELATIONSHIP - MAJOR
+ (:method (relationship-major ?randomroll ?topic ?subject ?event)
+   ; First Possibility
+   ((unify ?randomroll 1))
+   ((!worry-about ?subject ?event)(!!think-about personal happiness))
+
+   ; Second Possibility
+   ((unify ?randomroll 2))
+   ((!worry-about ?subject ?event)(!!think-about getting dumped))
+
+   ; Third Possibility
+   ((unify ?randomroll 3))
+   ((!worry-about ?subject ?event)(!!think-about being poor))
+
+   ; Fourth Possibility
+   ((unify ?randomroll 4))
+   ((!worry-about ?subject ?event)(!!think-about sibling argument))
+ )
+
+ ; RELATIONSHIP - MINOR
+ (:method (relationship-minor ?randomroll ?topic ?subject ?event)
+   ; First Possibility
+   ((unify ?randomroll 1))
+   ((!worry-about ?subject ?event)(!!think-about personal hesitation))
+
+   ; Second Possibility
+   ((unify ?randomroll 2))
+   ((!worry-about ?subject ?event)(!!think-about payment overdue))
+
+   ; Third Possibility
+   ((unify ?randomroll 3))
+   ((!worry-about ?subject ?event)(!!think-about school test))
+
+   ; Fourth Possibility
+   ((unify ?randomroll 4))
+   ((!worry-about ?subject ?event)(!!think-about getting sick))
+ )
 
   ; FINANCE
   (:method (analyze-worry-memory-event-finance ?subject ?event)
     ; Destruction Negative Event (Extreme) -> Life Changing
     ((or(unify ?event hacked)(unify ?event stolen)(unify ?event robbed)(unify ?event empty)(unify ?event fraud)(unify ?event default)(unify ?event broke)(unify ?event bankrupt)))
-    ((!worry-about ?subject ?event)(!think-about personal survival))
+    ((!worry-about ?subject ?event)(!!think-about personal survival))
 
     ; Personal Negative Event (Major) -> Difficult Situation
     ((or(unify ?event poor)(unify ?event due)(unify ?event payment)(unify ?event expired)(unify ?event pastdue)(unify ?event overdue)(unify ?event fee)(unify ?event frozen)(unify ?event charged)(unify ?event warning)(unify ?event error)(unify ?event available)(unify ?event amount)(unify ?event bill)(unify ?event tax)))
-    ((!worry-about ?subject ?event)(!think-about financial stability))
+    ((!worry-about ?subject ?event)(!!think-about financial stability))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience
     ((or(unify ?event stability)(unify ?event total)(unify ?event sum)(unify ?event status)(unify ?event investment)(unify ?event total)(unify ?event transaction)))
-    ((!worry-about ?subject ?event)(!think-about personal stability))
+    ((!worry-about ?subject ?event)(!!think-about personal stability))
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event)(!think-about creditcard overdue))
+    ((!worry-about ?subject ?event)(!!think-about creditcard overdue))
   )
 
   ; PERSONAL
   (:method (analyze-worry-memory-event-personal ?subject ?event)
     ; Huge Negative/Positive Event (Extreme) -> Life Changing
     ((or(unify ?event married)(unify ?event kids)(unify ?event arrested)(unify ?event killed)(unify ?event death)(unify ?event dead)(unify ?event cancer)(unify ?event aids)(unify ?event hiv)(unify ?event mugged)(unify ?event hospitalized)(unify ?event divorced)(unify ?event shot)(unify ?event stabbed)(unify ?event impaled)(unify ?event depressed)(unify ?event survival)))
-    ((!worry-about ?subject ?event)(!think-about getting hurt))
+    ((!worry-about ?subject ?event)(!!think-about getting hurt))
 
     ; Internal/External Struggle (Major) -> Difficult Situation
     ((or(unify ?event poor)(unify ?event broke)(unify ?event sick)(unify ?event health)(unify ?event happiness)(unify ?event flu)(unify ?event fever)(unify ?event love)(unify ?event dumped)(unify ?event fired)(unify ?event hurt)(unify ?event empty)(unify ?event old)(unify ?event weak)(unify ?event helpless)(unify ?event terrified)(unify ?event alone)(unify ?event insecure)))
-    ((!worry-about ?subject ?event)(!think-about becoming sad))
+    ((!worry-about ?subject ?event)(!!think-about becoming sad))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience
     ((or(unify ?event cold)(unify ?event hot)(unify ?event sad)(unify ?event happy)(unify ?event hesitant)(unify ?event hesitation)(unify ?event upset)(unify ?event anger)(unify ?event angry)(unify ?event tired)))
-    ((!worry-about ?subject ?event)(!think-about friends death))
+    ((!worry-about ?subject ?event)(!!think-about friends death))
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event)(!think-about relationship argument))
+    ((!worry-about ?subject ?event)(!!think-about relationship argument))
   )
 
   ; ACADEMIC
   (:method (analyze-worry-memory-event-academic ?subject ?event)
     ; Huge Negative/Positive Event (Extreme) -> End of Academic Career
     ((or(unify ?event failed)(unify ?event failing)(unify ?event fail)(unify ?event suspended)(unify ?event expulsion)(unify ?event expelled)(unify ?event shooting)))
-    ((!worry-about ?subject ?event)(!think-about family disappointment))
+    ((!worry-about ?subject ?event)(!!think-about family disappointment))
 
     ; Internal/External Struggle (Major) -> Difficult Situation
     ((or(unify ?event test)(unify ?event exam)(unify ?event midterm)(unify ?event final)(unify ?event difficulty)(unify ?event problems)(unify ?event struggle)(unify ?event score)(unify ?event grade)(unify ?event grades)(unify ?event carpool)))
-    ((!worry-about ?subject ?event)(!think-about driving home))
+    ((!worry-about ?subject ?event)(!!think-about driving home))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience/Boredom
     ((or(unify ?event class)(unify ?event course)(unify ?event teacher)(unify ?event professor)(unify ?event classroom)(unify ?event bored)(unify ?event boring)(unify ?event boredom)))
-    ((!worry-about ?subject ?event)(!think-about texting friend))
+    ((!worry-about ?subject ?event)(!!think-about texting friend))
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event)(!think-about salary stability))
+    ((!worry-about ?subject ?event)(!!think-about salary stability))
   )
 
     ; Tests if two values are the same for memory assignment.
