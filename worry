@@ -493,21 +493,81 @@
   ; FINANCE
   (:method (analyze-worry-memory-event-finance ?subject ?event)
     ; Destruction Negative Event (Extreme) -> Life Changing
-    ((or(unify ?event hacked)(unify ?event stolen)(unify ?event robbed)(unify ?event empty)(unify ?event fraud)(unify ?event default)(unify ?event broke)(unify ?event bankrupt)))
-    ((!worry-about ?subject ?event)(!!think-about personal survival))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event hacked)(unify ?event stolen)(unify ?event robbed)(unify ?event empty)(unify ?event fraud)(unify ?event default)(unify ?event broke)(unify ?event bankrupt)))
+    ((finance-extreme ?memRoll finance ?subject ?event))
 
     ; Personal Negative Event (Major) -> Difficult Situation
-    ((or(unify ?event poor)(unify ?event due)(unify ?event payment)(unify ?event expired)(unify ?event pastdue)(unify ?event overdue)(unify ?event fee)(unify ?event frozen)(unify ?event charged)(unify ?event warning)(unify ?event error)(unify ?event available)(unify ?event amount)(unify ?event bill)(unify ?event tax)))
-    ((!worry-about ?subject ?event)(!!think-about financial stability))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event poor)(unify ?event due)(unify ?event payment)(unify ?event expired)(unify ?event pastdue)(unify ?event overdue)(unify ?event fee)(unify ?event frozen)(unify ?event charged)(unify ?event warning)(unify ?event error)(unify ?event available)(unify ?event amount)(unify ?event bill)(unify ?event tax)(unify ?event loans)))
+    ((finance-major ?memRoll finance ?subject ?event))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience
-    ((or(unify ?event stability)(unify ?event total)(unify ?event sum)(unify ?event status)(unify ?event investment)(unify ?event total)(unify ?event transaction)))
-    ((!worry-about ?subject ?event)(!!think-about personal stability))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event stability)(unify ?event total)(unify ?event sum)(unify ?event status)(unify ?event investment)(unify ?event total)(unify ?event transaction)))
+    ((finance-minor ?memRoll finance ?subject ?event))
 
     ; NOTHING
     ()
     ((!worry-about ?subject ?event)(!!think-about creditcard overdue))
   )
+
+  ; FINANCE - EXTREME
+  (:method (finance-extreme ?randomroll ?topic ?subject ?event)
+     ; First Possibility
+     ((unify ?randomroll 1))
+     ((!worry-about ?subject ?event)(!!think-about personal survival))
+
+     ; Second Possibility
+     ((unify ?randomroll 2))
+     ((!worry-about ?subject ?event)(!!think-about savings hacked))
+
+     ; Third Possibility
+     ((unify ?randomroll 3))
+     ((!worry-about ?subject ?event)(!!think-about bank frozen))
+
+     ; Fourth Possibility
+     ((unify ?randomroll 4))
+     ((!worry-about ?subject ?event)(!!think-about being mugged))
+ )
+
+ ; FINANCE - MAJOR
+ (:method (finance-major ?randomroll ?topic ?subject ?event)
+   ; First Possibility
+   ((unify ?randomroll 1))
+   ((!worry-about ?subject ?event)(!!think-about financial stability))
+
+   ; Second Possibility
+   ((unify ?randomroll 2))
+   ((!worry-about ?subject ?event)(!!think-about check bouncing))
+
+   ; Third Possibility
+   ((unify ?randomroll 3))
+   ((!worry-about ?subject ?event)(!!think-about student loans))
+
+   ; Fourth Possibility
+   ((unify ?randomroll 4))
+   ((!worry-about ?subject ?event)(!!think-about becoming broke))
+ )
+
+ ; FINANCE - MINOR
+ (:method (finance-minor ?randomroll ?topic ?subject ?event)
+   ; First Possibility
+   ((unify ?randomroll 1))
+   ((!worry-about ?subject ?event)(!!think-about personal stability))
+
+   ; Second Possibility
+   ((unify ?randomroll 2))
+   ((!worry-about ?subject ?event)(!!think-about school tuition))
+
+   ; Third Possibility
+   ((unify ?randomroll 3))
+   ((!worry-about ?subject ?event)(!!think-about mortgage due))
+
+   ; Fourth Possibility
+   ((unify ?randomroll 4))
+   ((!worry-about ?subject ?event)(!!think-about school problems))
+ )
 
   ; PERSONAL
   (:method (analyze-worry-memory-event-personal ?subject ?event)
@@ -535,7 +595,7 @@
     ((!worry-about ?subject ?event)(!!think-about family disappointment))
 
     ; Internal/External Struggle (Major) -> Difficult Situation
-    ((or(unify ?event test)(unify ?event exam)(unify ?event midterm)(unify ?event final)(unify ?event difficulty)(unify ?event problems)(unify ?event struggle)(unify ?event score)(unify ?event grade)(unify ?event grades)(unify ?event carpool)))
+    ((or(unify ?event test)(unify ?event exam)(unify ?event midterm)(unify ?event final)(unify ?event difficulty)(unify ?event problems)(unify ?event struggle)(unify ?event score)(unify ?event grade)(unify ?event grades)(unify ?event carpool)(unify ?event tuition)))
     ((!worry-about ?subject ?event)(!!think-about driving home))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience/Boredom
