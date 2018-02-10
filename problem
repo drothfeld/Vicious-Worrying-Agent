@@ -24,6 +24,9 @@
     ; WORRY LEVEL: (calm) 0 -- 100 (freaking out)
     (bio-level worry me 50)
 
+    ; SELF CONSCIOUS LEVELS: (extremely conscious) 0 -- 10 (couldn't care less)
+    (self-conscious-level eating me 10)
+
     ; MEMORY TO START WORRY: worry(SUBJECT, EVENT/STATUS)
     (worry-memory me worry(car ticket))
   )

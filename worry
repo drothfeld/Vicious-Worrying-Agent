@@ -237,11 +237,15 @@
       ;preconditions for branch-2
       (
         (bio-level hunger me ?h)
+        (self-conscious-level eating me ?sc)
+        (worry-memory me worry(?subject ?event))
         (call <= ?h 25)
+        (assign ?randomroll (call randomWorry (?h)))
       )
       ;steps for branch-2
       (
         (!eat)
+        (eating-worry ?randomroll ?sc worry(?subject ?event))
       )
 
       ;preconditions for branch-3
@@ -320,7 +324,7 @@
       ((analyze-worry-memory-event-finance ?subject ?event))
 
       ; PERSONAL is subject
-      ((or(unify ?subject personal)(unify ?subject my)(unify ?subject getting)(unify ?subject being)(unify ?subject becoming)(unify ?subject im)(unify ?subject catching)(unify ?subject losing)(unify ?subject giving)(unify ?subject hurting)(unify ?subject breaking)(unify ?subject feeling)(unify ?subject owning)(unify ?subject having)(unify ?subject trying)(unify ?subject my)))
+      ((or(unify ?subject personal)(unify ?subject my)(unify ?subject getting)(unify ?subject being)(unify ?subject becoming)(unify ?subject im)(unify ?subject catching)(unify ?subject losing)(unify ?subject giving)(unify ?subject hurting)(unify ?subject breaking)(unify ?subject feeling)(unify ?subject owning)(unify ?subject having)(unify ?subject trying)(unify ?subject my)(unify ?subject eating)(unify ?subject gaining)))
       ((analyze-worry-memory-event-personal ?subject ?event))
 
       ; ACADEMIC is subject
@@ -578,12 +582,12 @@
 
     ; Internal/External Struggle (Major) -> Difficult Situation
     ((assign ?memRoll (call memoryRoll (?subject)))
-    (or(unify ?event poor)(unify ?event broke)(unify ?event sick)(unify ?event unsuccessful)(unify ?event health)(unify ?event happiness)(unify ?event flu)(unify ?event fever)(unify ?event love)(unify ?event dumped)(unify ?event fired)(unify ?event hurt)(unify ?event empty)(unify ?event old)(unify ?event weak)(unify ?event helpless)(unify ?event terrified)(unify ?event alone)(unify ?event insecure)))
+    (or(unify ?event poor)(unify ?event broke)(unify ?event sick)(unify ?event weight)(unify ?event fat)(unify ?event unsuccessful)(unify ?event health)(unify ?event happiness)(unify ?event flu)(unify ?event fever)(unify ?event love)(unify ?event dumped)(unify ?event fired)(unify ?event hurt)(unify ?event empty)(unify ?event old)(unify ?event weak)(unify ?event helpless)(unify ?event terrified)(unify ?event alone)(unify ?event insecure)))
     ((personal-major ?memRoll personal ?subject ?event))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience
     ((assign ?memRoll (call memoryRoll (?subject)))
-    (or(unify ?event cold)(unify ?event warm)(unify ?event sad)(unify ?event happy)(unify ?event hesitant)(unify ?event hesitation)(unify ?event upset)(unify ?event anger)(unify ?event angry)(unify ?event tired)))
+    (or(unify ?event cold)(unify ?event warm)(unify ?event sad)(unify ?event junk)(unify ?event happy)(unify ?event alot)(unify ?event hesitant)(unify ?event hesitation)(unify ?event upset)(unify ?event anger)(unify ?event angry)(unify ?event tired)))
     ((personal-minor ?memRoll personal ?subject ?event))
 
     ; NOTHING
@@ -641,7 +645,7 @@
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about test score))
+   ((!worry-about ?subject ?event)(!!think-about gaining weight))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
@@ -725,6 +729,34 @@
    ; Fourth Possibility
    ((unify ?randomroll 4))
    ((!worry-about ?subject ?event)(!!think-about school difficulty))
+ )
+
+ ; EATING
+ (:method (eating-worry ?randomroll ?eatingsensitivity worry(?subject ?event))
+   ((call > ?randomroll ?eatingsensitivity)(assign ?memRoll (call memoryRoll (?randomroll))))
+   ((eating-worry-memory ?memRoll ?subject ?event))
+
+   ; NOTHING
+   ()
+   ()
+ )
+
+ (:method (eating-worry-memory ?randomroll ?subject ?event)
+   ; First Possibility
+   ((unify ?randomroll 1))
+   ((!!think-about getting fat))
+
+   ; Second Possibility
+   ((unify ?randomroll 2))
+   ((!!think-about eating alot))
+
+   ; Third Possibility
+   ((unify ?randomroll 3))
+   ((!!think-about gaining weight))
+
+   ; Fourth Possibility
+   ((unify ?randomroll 4))
+   ((!!think-about eating junk))
  )
 
     ; Tests if two values are the same for memory assignment.
