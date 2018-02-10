@@ -140,7 +140,7 @@
 
     ; In this operator the agent is worrying about the notion that it is worrying,
     ; hence the vicious cycle.
-    (:operator (!worry-about-worrying-about)
+    (:operator (!worry-about-worrying-about ?subject ?event)
       ;preconditions
       (
         (bio-level worry me ?w)
@@ -293,12 +293,12 @@
       (
         (bio-level worry me ?w)
         (call >= ?w 75)
-        ;(worry-memory me ?memory)
+        (worry-memory me worry(?subject ?event))
       )
       ;steps for branch-2
       (
-        ;(!worry-about-worrying-about)
-        ;(analyze-worry-memory-subject ?memory)
+        ;(!worry-about-worrying-about ?subject ?event)
+        ;(analyze-worry-memory-subject worry(?subject ?event))
       )
 
       ;preconditions for branch-3
