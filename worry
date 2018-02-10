@@ -316,7 +316,7 @@
       ((analyze-worry-memory-event-relationship ?subject ?event))
 
       ; FINANCE is subject
-      ((or(unify ?subject money)(unify ?subject funds)(unify ?subject bank)(unify ?subject account)(unify ?subject wallet)(unify ?subject creditcard)(unify ?subject debitcard)(unify ?subject visa)(unify ?subject mastercard)(unify ?subject checkings)(unify ?subject savings)(unify ?subject trust)(unify ?subject cash)(unify ?subject loans)(unify ?subject taxes)(unify ?subject finances)(unify ?subject credit)(unify ?subject mortgage)(unify ?subject tuition)(unify ?subject bill)(unify ?subject check)(unify ?subject bond)(unify ?subject epay)(unify ?subject applepay)(unify ?subject venmo)(unify ?subject paypal)(unify ?subject paycheck)(unify ?subject refund)(unify ?subject irs)(unify ?subject accountant)(unify ?subject subscription)(unify ?subject salary)(unify ?subject tip)(unify ?subject financial)(unify ?subject stock)(unify ?subject investment)))
+      ((or(unify ?subject money)(unify ?subject funds)(unify ?subject bank)(unify ?subject account)(unify ?subject wallet)(unify ?subject creditcard)(unify ?subject debitcard)(unify ?subject visa)(unify ?subject mastercard)(unify ?subject checkings)(unify ?subject savings)(unify ?subject trust)(unify ?subject cash)(unify ?subject loans)(unify ?subject taxes)(unify ?subject finances)(unify ?subject credit)(unify ?subject mortgage)(unify ?subject tuition)(unify ?subject bill)(unify ?subject check)(unify ?subject bond)(unify ?subject epay)(unify ?subject selling)(unify ?subject buying)(unify ?subject applepay)(unify ?subject venmo)(unify ?subject paypal)(unify ?subject paycheck)(unify ?subject refund)(unify ?subject irs)(unify ?subject accountant)(unify ?subject subscription)(unify ?subject salary)(unify ?subject tip)(unify ?subject financial)(unify ?subject stock)(unify ?subject investment)))
       ((analyze-worry-memory-event-finance ?subject ?event))
 
       ; PERSONAL is subject
@@ -499,7 +499,7 @@
 
     ; Personal Negative Event (Major) -> Difficult Situation
     ((assign ?memRoll (call memoryRoll (?subject)))
-    (or(unify ?event poor)(unify ?event due)(unify ?event payment)(unify ?event expired)(unify ?event pastdue)(unify ?event overdue)(unify ?event fee)(unify ?event frozen)(unify ?event charged)(unify ?event warning)(unify ?event error)(unify ?event available)(unify ?event amount)(unify ?event bill)(unify ?event tax)(unify ?event loans)))
+    (or(unify ?event poor)(unify ?event due)(unify ?event payment)(unify ?event car)(unify ?event house)(unify ?event expired)(unify ?event pastdue)(unify ?event overdue)(unify ?event fee)(unify ?event frozen)(unify ?event charged)(unify ?event warning)(unify ?event error)(unify ?event available)(unify ?event amount)(unify ?event bill)(unify ?event tax)(unify ?event loans)))
     ((finance-major ?memRoll finance ?subject ?event))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience
@@ -578,7 +578,7 @@
 
     ; Internal/External Struggle (Major) -> Difficult Situation
     ((assign ?memRoll (call memoryRoll (?subject)))
-    (or(unify ?event poor)(unify ?event broke)(unify ?event sick)(unify ?event health)(unify ?event happiness)(unify ?event flu)(unify ?event fever)(unify ?event love)(unify ?event dumped)(unify ?event fired)(unify ?event hurt)(unify ?event empty)(unify ?event old)(unify ?event weak)(unify ?event helpless)(unify ?event terrified)(unify ?event alone)(unify ?event insecure)))
+    (or(unify ?event poor)(unify ?event broke)(unify ?event sick)(unify ?event unsuccessful)(unify ?event health)(unify ?event happiness)(unify ?event flu)(unify ?event fever)(unify ?event love)(unify ?event dumped)(unify ?event fired)(unify ?event hurt)(unify ?event empty)(unify ?event old)(unify ?event weak)(unify ?event helpless)(unify ?event terrified)(unify ?event alone)(unify ?event insecure)))
     ((personal-major ?memRoll personal ?subject ?event))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience
@@ -637,11 +637,11 @@
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!worry-about ?subject ?event)(!!think-about being cold))
+   ((!worry-about ?subject ?event)(!!think-about family event))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about being warm))
+   ((!worry-about ?subject ?event)(!!think-about test score))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
@@ -651,21 +651,81 @@
   ; ACADEMIC
   (:method (analyze-worry-memory-event-academic ?subject ?event)
     ; Huge Negative/Positive Event (Extreme) -> End of Academic Career
-    ((or(unify ?event failed)(unify ?event failing)(unify ?event fail)(unify ?event suspended)(unify ?event expulsion)(unify ?event expelled)(unify ?event shooting)))
-    ((!worry-about ?subject ?event)(!!think-about family disappointment))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event failed)(unify ?event failing)(unify ?event fail)(unify ?event suspended)(unify ?event expulsion)(unify ?event expelled)(unify ?event shooting)))
+    ((academic-extreme ?memRoll personal ?subject ?event))
 
     ; Internal/External Struggle (Major) -> Difficult Situation
-    ((or(unify ?event test)(unify ?event exam)(unify ?event midterm)(unify ?event final)(unify ?event difficulty)(unify ?event problems)(unify ?event struggle)(unify ?event score)(unify ?event grade)(unify ?event grades)(unify ?event carpool)(unify ?event tuition)))
-    ((!worry-about ?subject ?event)(!!think-about driving home))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event test)(unify ?event exam)(unify ?event midterm)(unify ?event final)(unify ?event difficulty)(unify ?event problems)(unify ?event struggle)(unify ?event score)(unify ?event grade)(unify ?event grades)(unify ?event carpool)(unify ?event tuition)))
+    ((academic-major ?memRoll personal ?subject ?event))
 
     ; Petty Negative Event (Minor) -> Personal Inconvenience/Boredom
-    ((or(unify ?event class)(unify ?event course)(unify ?event teacher)(unify ?event professor)(unify ?event classroom)(unify ?event bored)(unify ?event boring)(unify ?event boredom)))
-    ((!worry-about ?subject ?event)(!!think-about texting friend))
+    ((assign ?memRoll (call memoryRoll (?subject)))
+    (or(unify ?event class)(unify ?event course)(unify ?event teacher)(unify ?event professor)(unify ?event classroom)(unify ?event bored)(unify ?event boring)(unify ?event boredom)))
+    ((academic-minor ?memRoll personal ?subject ?event))
 
     ; NOTHING
     ()
     ((!worry-about ?subject ?event)(!!think-about salary stability))
   )
+
+  ; ACADEMIC - EXTREME
+  (:method (academic-extreme ?randomroll ?topic ?subject ?event)
+     ; First Possibility
+     ((unify ?randomroll 1))
+     ((!worry-about ?subject ?event)(!!think-about family disappointment))
+
+     ; Second Possibility
+     ((unify ?randomroll 2))
+     ((!worry-about ?subject ?event)(!!think-about being unsuccessful))
+
+     ; Third Possibility
+     ((unify ?randomroll 3))
+     ((!worry-about ?subject ?event)(!!think-about money saved))
+
+     ; Fourth Possibility
+     ((unify ?randomroll 4))
+     ((!worry-about ?subject ?event)(!!think-about teacher disappointment))
+ )
+
+ ; ACADEMIC - MAJOR
+ (:method (academic-major ?randomroll ?topic ?subject ?event)
+   ; First Possibility
+   ((unify ?randomroll 1))
+   ((!worry-about ?subject ?event)(!!think-about driving home))
+
+   ; Second Possibility
+   ((unify ?randomroll 2))
+   ((!worry-about ?subject ?event)(!!think-about class project))
+
+   ; Third Possibility
+   ((unify ?randomroll 3))
+   ((!worry-about ?subject ?event)(!!think-about getting help))
+
+   ; Fourth Possibility
+   ((unify ?randomroll 4))
+   ((!worry-about ?subject ?event)(!!think-about being happy))
+ )
+
+ ; ACADEMIC - MINOR
+ (:method (academic-minor ?randomroll ?topic ?subject ?event)
+   ; First Possibility
+   ((unify ?randomroll 1))
+   ((!worry-about ?subject ?event)(!!think-about texting friend))
+
+   ; Second Possibility
+   ((unify ?randomroll 2))
+   ((!worry-about ?subject ?event)(!!think-about being lazy))
+
+   ; Third Possibility
+   ((unify ?randomroll 3))
+   ((!worry-about ?subject ?event)(!!think-about being tired))
+
+   ; Fourth Possibility
+   ((unify ?randomroll 4))
+   ((!worry-about ?subject ?event)(!!think-about school difficulty))
+ )
 
     ; Tests if two values are the same for memory assignment.
     (:- (unify ?x ?x) nil)
