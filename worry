@@ -281,7 +281,8 @@
       ;preconditions for branch-1
       (
         (bio-level worry me ?w)
-        (call > ?w 100)
+        (self-conscious-level suicidal me ?s)
+        (call > ?w ?S)
       )
       ;steps for branch-1
       (

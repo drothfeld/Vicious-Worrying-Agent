@@ -27,6 +27,9 @@
     ; SELF CONSCIOUS LEVELS: (extremely conscious) 0 -- 10 (couldn't care less)
     (self-conscious-level eating me 10)
 
+    ; SUICIDAL LEVEL: (ready to jump) 50 -- 150 (there is always hope)
+    (self-conscious-level suicidal me 100)
+
     ; MEMORY TO START WORRY: worry(SUBJECT, EVENT/STATUS)
     (worry-memory me worry(car ticket))
   )
