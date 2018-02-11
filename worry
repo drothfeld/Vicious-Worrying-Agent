@@ -93,18 +93,15 @@
     ; This internal operator changes the memory the agent is worrying about based
     ; on how it was analyzed in analyze-worry-memory-subject and
     ; analyze-worry-memory-event-SUBJECT.
-    (:operator (!!think-about ?newSubject ?newEvent)
+    (:operator (!think-about ?category)
       ;preconditions
       (
-        (worry-memory me worry(?subject ?event))
       )
       ;deleted
       (
-        (worry-memory me worry(?subject ?event))
       )
       ;added
       (
-        (worry-memory me worry(?newSubject ?newEvent))
       )
     )
 
@@ -113,6 +110,8 @@
     (:operator (!worry-about ?subject ?event)
       ;preconditions
       (
+        (worry-memory me worry(?oldSubject ?oldEvent))
+        (system-flag-init-worry ?init)
         (bio-level worry me ?w)
         (bio-level hunger me ?h)
         (bio-level energy me ?e)
@@ -124,6 +123,8 @@
       )
       ;deleted
       (
+        (worry-memory me worry(?oldSubject ?oldEvent))
+        (system-flag-init-worry ?init)
         (bio-level worry me ?w)
         (bio-level hunger me ?h)
         (bio-level energy me ?e)
@@ -131,6 +132,8 @@
       )
       ;added
       (
+        (worry-memory me worry(?subject ?event))
+        (system-flag-init-worry 1)
         (bio-level worry me (call + ?w ?rndWorry))
         (bio-level hunger me (call - ?h ?rndHunger))
         (bio-level energy me (call - ?e ?rndEnergy))
@@ -197,7 +200,8 @@
       )
 
       ;preconditions for branch-2
-      ()
+      (
+      )
       ;steps for branch-2
       (
         (begin-worrying)
@@ -206,11 +210,24 @@
 
     ; Called from the starting method. This method contains
     ; the core logic of the worry cycle.
-
     (:method (begin-worrying)
       ;preconditions for branch-1
-      ()
+      (
+        (system-flag-init-worry ?init)
+        (unify ?init 0)
+        (worry-memory me worry(?subject ?event))
+      )
       ;steps for branch-1
+      (
+        (!worry-about ?subject ?event)
+        (check-bio-levels)
+        (meta-worrying)
+        (stop-worrying)
+      )
+
+      ;preconditions for branch-2
+      ()
+      ;steps for branch-2
       (
         (check-bio-levels)
         (meta-worrying)
@@ -334,7 +351,7 @@
 
       ; NOTHING
       ()
-      ((!worry-about ?subject ?event)(!!think-about personal happiness))
+      ((!think-about myself)(!worry-about personal happiness))
     )
 
     ; VEHICLE
@@ -356,64 +373,64 @@
 
       ; NOTHING
       ()
-      ((!worry-about ?subject ?event)(!!think-about money available))
+      ((!think-about finances)(!worry-about money available))
   )
 
  ; VEHICLE - EXTREME
  (:method (vehicle-extreme ?randomroll ?topic ?subject ?event)
     ; First Possibility
     ((unify ?randomroll 1))
-    ((!worry-about ?subject ?event)(!!think-about everyone safe))
+    ((!think-about others)(!worry-about everyone safe))
 
     ; Second Possibility
     ((unify ?randomroll 2))
-    ((!worry-about ?subject ?event)(!!think-about insurance amount))
+    ((!think-about money)(!worry-about insurance amount))
 
     ; Third Possibility
     ((unify ?randomroll 3))
-    ((!worry-about ?subject ?event)(!!think-about getting killed))
+    ((!think-about mortality)(!worry-about getting killed))
 
     ; Fourth Possibility
     ((unify ?randomroll 4))
-    ((!worry-about ?subject ?event)(!!think-about school carpool))
+    ((!think-about transportation)(!worry-about school carpool))
 )
 
 ; VEHICLE - MAJOR
 (:method (vehicle-major ?randomroll ?topic ?subject ?event)
   ; First Possibility
   ((unify ?randomroll 1))
-  ((!worry-about ?subject ?event)(!!think-about money available))
+  ((!think-about finances)(!worry-about money available))
 
   ; Second Possibility
   ((unify ?randomroll 2))
-  ((!worry-about ?subject ?event)(!!think-about train commute))
+  ((!think-about transportation)(!worry-about train commute))
 
   ; Third Possibility
   ((unify ?randomroll 3))
-  ((!worry-about ?subject ?event)(!!think-about getting upset))
+  ((!think-about emotions)(!worry-about getting upset))
 
   ; Fourth Possibility
   ((unify ?randomroll 4))
-  ((!worry-about ?subject ?event)(!!think-about bill total))
+  ((!think-about finances)(!worry-about bill total))
 )
 
 ; VEHICLE - MINOR
 (:method (vehicle-minor ?randomroll ?topic ?subject ?event)
   ; First Possibility
   ((unify ?randomroll 1))
-  ((!worry-about ?subject ?event)(!!think-about personal appearance))
+  ((!think-about vanity)(!worry-about personal appearance))
 
   ; Second Possibility
   ((unify ?randomroll 2))
-  ((!worry-about ?subject ?event)(!!think-about being bored))
+  ((!think-about nothing)(!worry-about being bored))
 
   ; Third Possibility
   ((unify ?randomroll 3))
-  ((!worry-about ?subject ?event)(!!think-about cash status))
+  ((!think-about money)(!worry-about cash status))
 
   ; Fourth Possibility
   ((unify ?randomroll 4))
-  ((!worry-about ?subject ?event)(!!think-about school test))
+  ((!think-about academics)(!worry-about school test))
 )
 
   ; RELATIONSHIP
@@ -435,64 +452,64 @@
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event)(!!think-about being alone))
+    ((!think-about sadness)(!worry-about being alone))
   )
 
   ; RELATIONSHIP - EXTREME
   (:method (relationship-extreme ?randomroll ?topic ?subject ?event)
      ; First Possibility
      ((unify ?randomroll 1))
-     ((!worry-about ?subject ?event)(!!think-about family health))
+     ((!think-about others)(!worry-about family health))
 
      ; Second Possibility
      ((unify ?randomroll 2))
-     ((!worry-about ?subject ?event)(!!think-about mom death))
+     ((!think-about parents)(!worry-about mom death))
 
      ; Third Possibility
      ((unify ?randomroll 3))
-     ((!worry-about ?subject ?event)(!!think-about dad death))
+     ((!think-about parents)(!worry-about dad death))
 
      ; Fourth Possibility
      ((unify ?randomroll 4))
-     ((!worry-about ?subject ?event)(!!think-about becoming depressed))
+     ((!think-about sadness)(!worry-about becoming depressed))
  )
 
  ; RELATIONSHIP - MAJOR
  (:method (relationship-major ?randomroll ?topic ?subject ?event)
    ; First Possibility
    ((unify ?randomroll 1))
-   ((!worry-about ?subject ?event)(!!think-about personal happiness))
+   ((!think-about myself)(!worry-about personal happiness))
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!worry-about ?subject ?event)(!!think-about getting dumped))
+   ((!think-about failure)(!worry-about getting dumped))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about being poor))
+   ((!think-about money)(!worry-about being poor))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
-   ((!worry-about ?subject ?event)(!!think-about sibling argument))
+   ((!think-about frustration)(!worry-about sibling argument))
  )
 
  ; RELATIONSHIP - MINOR
  (:method (relationship-minor ?randomroll ?topic ?subject ?event)
    ; First Possibility
    ((unify ?randomroll 1))
-   ((!worry-about ?subject ?event)(!!think-about personal hesitation))
+   ((!think-about myself)(!worry-about personal hesitation))
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!worry-about ?subject ?event)(!!think-about payment overdue))
+   ((!think-about finances)(!worry-about payment overdue))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about school test))
+   ((!think-about academics)(!worry-about school test))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
-   ((!worry-about ?subject ?event)(!!think-about getting sick))
+   ((!think-about health)(!worry-about getting sick))
  )
 
   ; FINANCE
@@ -514,64 +531,64 @@
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event)(!!think-about creditcard overdue))
+    ((!think-about finances)(!worry-about creditcard overdue))
   )
 
   ; FINANCE - EXTREME
   (:method (finance-extreme ?randomroll ?topic ?subject ?event)
      ; First Possibility
      ((unify ?randomroll 1))
-     ((!worry-about ?subject ?event)(!!think-about personal survival))
+     ((!think-about life)(!worry-about personal survival))
 
      ; Second Possibility
      ((unify ?randomroll 2))
-     ((!worry-about ?subject ?event)(!!think-about savings hacked))
+     ((!think-about finances)(!worry-about savings hacked))
 
      ; Third Possibility
      ((unify ?randomroll 3))
-     ((!worry-about ?subject ?event)(!!think-about bank frozen))
+     ((!think-about finances)(!worry-about bank frozen))
 
      ; Fourth Possibility
      ((unify ?randomroll 4))
-     ((!worry-about ?subject ?event)(!!think-about being mugged))
+     ((!think-about safety)(!worry-about being mugged))
  )
 
  ; FINANCE - MAJOR
  (:method (finance-major ?randomroll ?topic ?subject ?event)
    ; First Possibility
    ((unify ?randomroll 1))
-   ((!worry-about ?subject ?event)(!!think-about financial stability))
+   ((!think-about finances)(!worry-about financial stability))
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!worry-about ?subject ?event)(!!think-about check bouncing))
+   ((!think-about money)(!worry-about check bouncing))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about student loans))
+   ((!think-about finances)(!worry-about student loans))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
-   ((!worry-about ?subject ?event)(!!think-about becoming broke))
+   ((!think-about safety)(!worry-about becoming broke))
  )
 
  ; FINANCE - MINOR
  (:method (finance-minor ?randomroll ?topic ?subject ?event)
    ; First Possibility
    ((unify ?randomroll 1))
-   ((!worry-about ?subject ?event)(!!think-about personal stability))
+   ((!think-about myself)(!worry-about personal stability))
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!worry-about ?subject ?event)(!!think-about school tuition))
+   ((!think-about finances)(!worry-about school tuition))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about mortgage due))
+   ((!think-about money)(!worry-about mortgage due))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
-   ((!worry-about ?subject ?event)(!!think-about school problems))
+   ((!think-about academics)(!worry-about school problems))
  )
 
   ; PERSONAL
@@ -593,64 +610,64 @@
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event)(!!think-about relationship argument))
+    ((!think-about frustration)(!worry-about relationship argument))
   )
 
   ; PERSONAL - EXTREME
   (:method (personal-extreme ?randomroll ?topic ?subject ?event)
      ; First Possibility
      ((unify ?randomroll 1))
-     ((!worry-about ?subject ?event)(!!think-about getting hurt))
+     ((!think-about safety)(!worry-about getting hurt))
 
      ; Second Possibility
      ((unify ?randomroll 2))
-     ((!worry-about ?subject ?event)(!!think-about having kids))
+     ((!think-about future)(!worry-about having kids))
 
      ; Third Possibility
      ((unify ?randomroll 3))
-     ((!worry-about ?subject ?event)(!!think-about being rejected))
+     ((!think-about failing)(!worry-about being rejected))
 
      ; Fourth Possibility
      ((unify ?randomroll 4))
-     ((!worry-about ?subject ?event)(!!think-about getting divorced))
+     ((!think-about failing)(!worry-about getting divorced))
  )
 
  ; PERSONAL - MAJOR
  (:method (personal-major ?randomroll ?topic ?subject ?event)
    ; First Possibility
    ((unify ?randomroll 1))
-   ((!worry-about ?subject ?event)(!!think-about becoming sad))
+   ((!think-about sorrow)(!worry-about becoming sad))
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!worry-about ?subject ?event)(!!think-about being happy))
+   ((!think-about sorrow)(!worry-about being happy))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about getting angry))
+   ((!think-about frustration)(!worry-about getting angry))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
-   ((!worry-about ?subject ?event)(!!think-about family tragedy))
+   ((!think-about death)(!worry-about family tragedy))
  )
 
  ; PERSONAL - MINOR
  (:method (personal-minor ?randomroll ?topic ?subject ?event)
    ; First Possibility
    ((unify ?randomroll 1))
-   ((!worry-about ?subject ?event)(!!think-about friends death))
+   ((!think-about death)(!worry-about friends death))
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!worry-about ?subject ?event)(!!think-about family event))
+   ((!think-about others)(!worry-about family event))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about gaining weight))
+   ((!think-about health)(!worry-about gaining weight))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
-   ((!worry-about ?subject ?event)(!!think-about savings total))
+   ((!think-about money)(!worry-about savings total))
  )
 
   ; ACADEMIC
@@ -672,64 +689,64 @@
 
     ; NOTHING
     ()
-    ((!worry-about ?subject ?event)(!!think-about salary stability))
+    ((!think-about finances)(!worry-about salary stability))
   )
 
   ; ACADEMIC - EXTREME
   (:method (academic-extreme ?randomroll ?topic ?subject ?event)
      ; First Possibility
      ((unify ?randomroll 1))
-     ((!worry-about ?subject ?event)(!!think-about family disappointment))
+     ((!think-about failing)(!worry-about family disappointment))
 
      ; Second Possibility
      ((unify ?randomroll 2))
-     ((!worry-about ?subject ?event)(!!think-about being unsuccessful))
+     ((!think-about failing)(!worry-about being unsuccessful))
 
      ; Third Possibility
      ((unify ?randomroll 3))
-     ((!worry-about ?subject ?event)(!!think-about money saved))
+     ((!think-about finances)(!worry-about money saved))
 
      ; Fourth Possibility
      ((unify ?randomroll 4))
-     ((!worry-about ?subject ?event)(!!think-about teacher disappointment))
+     ((!think-about failing)(!worry-about teacher disappointment))
  )
 
  ; ACADEMIC - MAJOR
  (:method (academic-major ?randomroll ?topic ?subject ?event)
    ; First Possibility
    ((unify ?randomroll 1))
-   ((!worry-about ?subject ?event)(!!think-about driving home))
+   ((!think-about safety)(!worry-about driving home))
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!worry-about ?subject ?event)(!!think-about class project))
+   ((!think-about academics)(!worry-about class project))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about getting help))
+   ((!think-about failing)(!worry-about getting help))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
-   ((!worry-about ?subject ?event)(!!think-about being happy))
+   ((!think-about sorrow)(!worry-about being happy))
  )
 
  ; ACADEMIC - MINOR
  (:method (academic-minor ?randomroll ?topic ?subject ?event)
    ; First Possibility
    ((unify ?randomroll 1))
-   ((!worry-about ?subject ?event)(!!think-about texting friend))
+   ((!think-about others)(!worry-about texting friend))
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!worry-about ?subject ?event)(!!think-about being lazy))
+   ((!think-about boredom)(!worry-about being lazy))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!worry-about ?subject ?event)(!!think-about being tired))
+   ((!think-about health)(!worry-about being tired))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
-   ((!worry-about ?subject ?event)(!!think-about school difficulty))
+   ((!think-about academics)(!worry-about school difficulty))
  )
 
  ; EATING
@@ -745,19 +762,19 @@
  (:method (eating-worry-memory ?randomroll ?subject ?event)
    ; First Possibility
    ((unify ?randomroll 1))
-   ((!!think-about getting fat))
+   ((!worry-about getting fat))
 
    ; Second Possibility
    ((unify ?randomroll 2))
-   ((!!think-about eating alot))
+   ((!worry-about eating alot))
 
    ; Third Possibility
    ((unify ?randomroll 3))
-   ((!!think-about gaining weight))
+   ((!worry-about gaining weight))
 
    ; Fourth Possibility
    ((unify ?randomroll 4))
-   ((!!think-about eating junk))
+   ((!worry-about eating junk))
  )
 
     ; Tests if two values are the same for memory assignment.
