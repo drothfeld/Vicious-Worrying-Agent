@@ -24,7 +24,7 @@
     (bio-level bladder me 50)
     (bio-level energy me 50)
 
-    ; WORRY LEVEL: (calm) 0 -- 100 (freaking out)
+    ; WORRY LEVEL: (freaking out) 0 -- 100 (calm)
     (bio-level worry me 50)
 
     ; SELF CONSCIOUS LEVELS: (extremely conscious) 0 -- 10 (couldn't care less)
@@ -34,7 +34,7 @@
     (self-conscious-level suicidal me 100)
 
     ; MEMORY TO START WORRY: worry(SUBJECT, EVENT/STATUS)
-    (worry-memory me worry(car broken))
+    (worry-memory me worry(car crash))
   )
 
 
