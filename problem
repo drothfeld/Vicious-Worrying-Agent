@@ -24,10 +24,11 @@
     (bio-level bladder me 50)
     (bio-level energy me 50)
 
-    ; WORRY LEVEL: (freaking out) 0 -- 100 (calm)
+    ; WORRY LEVEL: (calm) 0 -- 100 (freaking out)
     (bio-level worry me 50)
 
     ; SELF CONSCIOUS LEVELS: (extremely conscious) 0 -- 10 (couldn't care less)
+    ; TODO: Implement eating-counter to worry more based how on how many times worried
     (self-conscious-level eating me 9)
 
     ; SUICIDAL LEVEL: (ready to jump) 50 -- 150 (there is always hope)

@@ -299,7 +299,7 @@
       (
         (bio-level worry me ?w)
         (self-conscious-level suicidal me ?s)
-        (call > ?w ?S)
+        (call > ?w ?s)
       )
       ;steps for branch-1
       (
